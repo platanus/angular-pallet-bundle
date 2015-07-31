@@ -18,6 +18,11 @@
     "jshint-stylish": "^1.0.0",
     "gulp-ng-annotate": "^1.0.0",
     "npm": "^2.10.1",
-    "gulp-prompt": "^0.1.2"
+    "gulp-prompt": "^0.1.2",
+    "es5-shim": "^4.1.10",
+    "check-more-types": "1.8.1",
+    "check-types": "1.4.0",
+    "lazy-ass": "^0.5.8",
+    "ng-describe": "^0.14.0"
   }
 }

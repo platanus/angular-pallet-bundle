@@ -15,8 +15,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      './node_modules/es5-shim/es5-shim.js',
+      './node_modules/check-types/src/check-types.js',
+      './node_modules/check-more-types/check-more-types.js',
+      './node_modules/lazy-ass/index.js',
+      './node_modules/ng-describe/ng-describe.js',
       './bower_components/angular/angular.js',
       './bower_components/angular-mocks/angular-mocks.js',
+      './bower_components/ng-file-upload/ng-file-upload.js',
       './src/index.js',
       './src/*.js',
       './tests/*.js'
