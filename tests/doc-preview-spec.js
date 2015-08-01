@@ -69,8 +69,8 @@ ngDescribe({
 ngDescribe({
   name: 'Async upload directive with explicit extension',
   modules: 'platanus.upload',
-  parentScope: { documentUrl: 'http://some-url.com/file.png', documentExtension: 'doc' },
-  element: '<doc-preview document-extension="documentExtension" document-url="documentUrl"></doc-preview>',
+  parentScope: { documentUrl: 'http://some-url.com/file.png' },
+  element: '<doc-preview document-extension="doc" document-url="documentUrl"></doc-preview>',
 
   tests: function (deps) {
     it('shows a link with icon matching document-extension attribute',function(){

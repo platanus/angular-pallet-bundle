@@ -19,7 +19,7 @@ function docPreview() {
     scope: {
       documentUrl: '=',
       documentName: '=',
-      documentExtension: '=',
+      documentExtension: '@',
       noDocumentText: '@',
       hidePreview: '@',
       hideLink:'@'
@@ -34,13 +34,6 @@ function docPreview() {
     _scope.imageSrc = imageSrc;
     _scope.linkUrl = linkUrl;
     _scope.getNoDocumentText = getNoDocumentText;
-
-    function getDocExtension() {
-      if(!!_scope.documentExtension) return _scope.documentExtension;
-      if(!_scope.documentUrl) return;
-      var ext = _scope.documentUrl.split('/').pop();
-      return ext.split('?').shift().split('.').pop();
-    }
 
     function getImageExtensions(){
       var IMAGE_EXTENSIONS = ['gif', 'jpeg', 'jpg', 'png', 'bmp'];
@@ -72,6 +65,13 @@ function docPreview() {
       return docType() === 'none';
     }
 
+    function getDocExtension() {
+      if(!!_scope.documentExtension) return _scope.documentExtension;
+      if(!_scope.documentUrl) return;
+      var ext = _scope.documentUrl.split('/').pop();
+      return ext.split('?').shift().split('.').pop();
+    }
+
     function docIcon() {
       var extension = getDocExtension();
       if(getKnownExtensions().indexOf(extension) === -1) return 'unknown';
@@ -95,7 +95,6 @@ function docPreview() {
 
     function imageSrc() {
       if(hasNoFile()) return '';
-
       return (isImageType() && !_scope.hidePreview) ? _scope.documentUrl : iconUrl();
     }
 

@@ -12,7 +12,7 @@ ngDescribe({
   tests: function (deps) {
     var successfullyReponse = null;
 
-    describe('With preview activated', function(){
+    describe('loading a file', function(){
       beforeEach(function() {
         successfullyReponse = {
           upload: {
