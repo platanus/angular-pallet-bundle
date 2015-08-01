@@ -17,7 +17,10 @@
   "strict": false,
   "trailing": true,
   "smarttabs": true,
+  "multistr": true,
   "globals": {
+    "console"              : false,
+    "require"              : false,
     "$"                    : false,
     "angular"              : false,
     "module"               : false,

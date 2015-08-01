@@ -13,6 +13,7 @@ var gulp = require('gulp'),
 var paths = {
   src: ['./src/index.js','./src/*.js'],
   dist: ['./dist/*.js'],
+  icons: ['./src/assets/file-extensions/*']
 };
 
 var sourceMin = 'angular-upload.min.js';
@@ -23,7 +24,7 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('build', ['lint'], function() {
+gulp.task('build', ['lint', 'copy-icons'], function() {
   return gulp.src(paths.src)
     .pipe(ngannotate())
     .pipe(uglify())
@@ -31,6 +32,11 @@ gulp.task('build', ['lint'], function() {
     .pipe(size())
     .pipe(gulp.dest('dist'))
     .pipe(notify('Build finished'));
+});
+
+gulp.task('copy-icons', function() {
+  return gulp.src(paths.icons)
+    .pipe(gulp.dest('dist/assets/file-extensions'));
 });
 
 gulp.task('bump', function (cb) {
