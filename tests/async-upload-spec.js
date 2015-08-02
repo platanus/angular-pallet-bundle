@@ -7,7 +7,13 @@ ngDescribe({
       return _uploadData;
     }
   },
-  element: '<async-upload upload-callback="setUploadData($uploadData)" upload-url="uploads" ng-model="user.uploadIdentifier"></async-upload>',
+  element:
+    '<async-upload ' +
+      'button-label="Upload please" ' +
+      'upload-callback="setUploadData($uploadData)" ' +
+      'upload-url="uploads" ' +
+      'ng-model="user.uploadIdentifier">' +
+    '</async-upload>',
 
   tests: function (deps) {
     var successfullyReponse = null;
@@ -43,6 +49,11 @@ ngDescribe({
         expect(element.attr('ngf-select') !== undefined).toBe(true);
         expect(element.attr('ng-model') !== undefined).toBe(true);
         expect(element.attr('ngf-change') !== undefined).toBe(true);
+      });
+
+      it('change custom button label', function() {
+        var element = deps.element.find('button');
+        expect(element.text()).toBe('Upload please');
       });
 
       it('uploads a file with ngUploadFile service', function() {

@@ -8,11 +8,12 @@ function asyncUpload(Upload, $parse) {
   var directive = {
     template:
       '<div class="async-upload" ngf-change="upload($files)" ngf-select ng-model="files">' +
-        '<button>Upload</button>' +
+        '<button>{{ getButtonLabel() }}</button>' +
       '</div>',
     require: 'ngModel',
     scope: {
-      uploadUrl: '@'
+      uploadUrl: '@',
+      buttonLabel: '@'
     },
     link: link,
   };
@@ -21,6 +22,8 @@ function asyncUpload(Upload, $parse) {
 
   function link(_scope, _element, _attrs, _controller) {
     _scope.upload = upload;
+    _scope.getButtonLabel = getButtonLabel;
+
     var callback = _attrs.uploadCallback;
     if(callback) callback = $parse(callback);
 
@@ -38,6 +41,10 @@ function asyncUpload(Upload, $parse) {
           _controller.$setViewValue(data.upload.identifier);
           if(callback) { callback(_scope.$parent, { $uploadData: data }); }
         });
+    }
+
+    function getButtonLabel() {
+      return (_scope.buttonLabel || 'Select file...');
     }
   }
 }
