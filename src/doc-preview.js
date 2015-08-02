@@ -9,7 +9,7 @@ function docPreview() {
     template:
       '<div class="doc-preview">' +
         '<p class="no-document-text" ng-if="getNoDocumentText()">{{ getNoDocumentText() }}</p>' +
-        '<img class="image-preview" ng-if="imageSrc()" ng-src="{{ imageSrc() }}"/>' +
+        '<img class="image-preview" ng-class="{ icon: !imageAsPreview() }" ng-if="imageSrc()" ng-src="{{ imageSrc() }}"/>' +
         '<a class="doc-link" ng-if="linkUrl()" href="{{ linkUrl() }}" target="_blank">' +
           '{{ linkLabel() }}' +
         '</a>' +
@@ -32,6 +32,7 @@ function docPreview() {
   function link(_scope) {
     _scope.linkLabel = linkLabel;
     _scope.imageSrc = imageSrc;
+    _scope.imageAsPreview = imageAsPreview;
     _scope.linkUrl = linkUrl;
     _scope.getNoDocumentText = getNoDocumentText;
 
@@ -95,7 +96,11 @@ function docPreview() {
 
     function imageSrc() {
       if(hasNoFile()) return '';
-      return (isImageType() && !_scope.hidePreview) ? _scope.documentUrl : iconUrl();
+      return imageAsPreview() ? _scope.documentUrl : iconUrl();
+    }
+
+    function imageAsPreview() {
+      return (isImageType() && !_scope.hidePreview);
     }
 
     function linkUrl() {

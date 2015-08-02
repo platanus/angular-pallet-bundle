@@ -44,6 +44,11 @@ ngDescribe({
       var link = deps.element.find('a');
       expect(link.text()).toMatch('http://some-url.com/file.png');
     });
+
+    it('removes icon class from image', function() {
+      var img = deps.element[0].querySelectorAll('.icon')[0];
+      expect(img).toBe(undefined);
+    });
   }
 });
 
@@ -62,6 +67,11 @@ ngDescribe({
     it('shows link with valid url', function() {
       var link = deps.element.find('a');
       expect(link.text()).toMatch('http://some-url.com/file.png');
+    });
+
+    it('adds icon class to image', function() {
+      var img = deps.element[0].querySelectorAll('.icon')[0];
+      expect(img).not.toBe(undefined);
     });
   }
 });
