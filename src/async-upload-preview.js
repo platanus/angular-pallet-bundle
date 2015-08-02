@@ -13,8 +13,7 @@ function asyncUploadPreview() {
       ngModel: '=',
       documentName: '=',
       uploadUrl: '@',
-      hidePreview: '@',
-      hideLink: '@',
+      renderImageAs: '@',
       noDocumentText: '@',
       documentExtension: '@'
     },
@@ -26,8 +25,7 @@ function asyncUploadPreview() {
           'ng-model="ngModel"></async-upload>' +
         '<doc-preview ' +
           'no-document-text="{{noDocumentText}}" ' +
-          'hide-link="{{hideLink}}" ' +
-          'hide-preview="{{hidePreview}}" ' +
+          'render-image-as="{{renderImageAs}}" ' +
           'document-name="uploadData.documentName" ' +
           'document-extension="{{uploadData.fileExtension}}" ' +
           'document-url="uploadData.downloadUrl">' +

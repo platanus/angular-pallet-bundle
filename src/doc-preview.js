@@ -21,8 +21,7 @@ function docPreview() {
       documentName: '=',
       documentExtension: '@',
       noDocumentText: '@',
-      hidePreview: '@',
-      hideLink:'@'
+      renderImageAs: '@'
     },
     link: link
   };
@@ -100,11 +99,11 @@ function docPreview() {
     }
 
     function imageAsPreview() {
-      return (isImageType() && !_scope.hidePreview);
+      return (isImageType() && _scope.renderImageAs !== 'link');
     }
 
     function linkUrl() {
-      if(hasNoFile() || (isImageType() && _scope.hideLink)) return '';
+      if(hasNoFile() || (isImageType() && _scope.renderImageAs === 'thumb')) return '';
 
       return _scope.documentUrl;
     }

@@ -53,10 +53,10 @@ ngDescribe({
 });
 
 ngDescribe({
-  name: 'Async upload directive with image url and hide preview attribute enabled',
+  name: 'Async upload directive with image url and render-image-as attribute as link',
   modules: 'platanus.upload',
   parentScope: { documentUrl: 'http://some-url.com/file.png' },
-  element: '<doc-preview hide-preview="true" document-url="documentUrl"></doc-preview>',
+  element: '<doc-preview render-image-as="link" document-url="documentUrl"></doc-preview>',
 
   tests: function (deps) {
     it('renders image icon', function() {
@@ -72,6 +72,30 @@ ngDescribe({
     it('adds icon class to image', function() {
       var img = deps.element[0].querySelectorAll('.icon')[0];
       expect(img).not.toBe(undefined);
+    });
+  }
+});
+
+ngDescribe({
+  name: 'Async upload directive with image url and render-image-as attribute as thumb',
+  modules: 'platanus.upload',
+  parentScope: { documentUrl: 'http://some-url.com/file.png' },
+  element: '<doc-preview render-image-as="thumb" document-url="documentUrl"></doc-preview>',
+
+  tests: function (deps) {
+    it('renders image thumbnail', function() {
+      var img = deps.element.find('img');
+      expect(img.prop('src')).toMatch('http://some-url.com/file.png');
+    });
+
+    it('hides link', function() {
+      var link = deps.element[0].querySelectorAll('a')[0];
+      expect(link).toBe(undefined);
+    });
+
+    it('removes icon class from image', function() {
+      var img = deps.element[0].querySelectorAll('.icon')[0];
+      expect(img).toBe(undefined);
     });
   }
 });
