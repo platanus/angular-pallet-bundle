@@ -25,7 +25,14 @@ ngDescribe({
   name: 'Async upload preview directive loading a file',
   modules: 'platanus.upload',
   exposeApi: true,
-  inject: ['Upload', '$compile'],
+  mock: {
+    'platanus.upload': {
+      'encodedIcons': {
+        'xls': 'encoded_xls_file'
+      }
+    }
+  },
+  inject: ['Upload', '$compile', 'encodedIcons'],
 
   tests: function(deps, exposeApi) {
     beforeEach(function() {
@@ -68,7 +75,7 @@ ngDescribe({
 
     it('shows preview img icon based on file extension param', function() {
       var img = deps.element.find('img');
-      expect(img.prop('src')).toMatch('/assets/file-extensions/file_extension_xls.png');
+      expect(img.prop('src')).toMatch(deps.encodedIcons.xls);
     });
 
     it('shows link with valid file url', function() {

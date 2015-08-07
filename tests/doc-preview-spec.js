@@ -56,12 +56,20 @@ ngDescribe({
   name: 'Async upload directive with image url and render-image-as attribute as link',
   modules: 'platanus.upload',
   parentScope: { documentUrl: 'http://some-url.com/file.png' },
+  mock: {
+    'platanus.upload': {
+      'encodedIcons': {
+        'png': 'encoded_png_file'
+      }
+    }
+  },
+  inject: 'encodedIcons',
   element: '<doc-preview render-image-as="link" document-url="documentUrl"></doc-preview>',
 
   tests: function (deps) {
     it('renders image icon', function() {
       var img = deps.element.find('img');
-      expect(img.prop('src')).toMatch('/assets/file-extensions/file_extension_png.png');
+      expect(img.prop('src')).toMatch(deps.encodedIcons.png);
     });
 
     it('shows link with valid url', function() {
@@ -104,12 +112,20 @@ ngDescribe({
   name: 'Async upload directive with explicit extension',
   modules: 'platanus.upload',
   parentScope: { documentUrl: 'http://some-url.com/file.png' },
+  mock: {
+    'platanus.upload': {
+      'encodedIcons': {
+        'doc': 'encoded_doc_file'
+      }
+    }
+  },
+  inject: 'encodedIcons',
   element: '<doc-preview document-extension="doc" document-url="documentUrl"></doc-preview>',
 
   tests: function (deps) {
     it('shows a link with icon matching document-extension attribute',function(){
       var element = deps.element.find('img');
-      expect(element.prop('src')).toMatch('file_extension_doc.png');
+      expect(element.prop('src')).toMatch(deps.encodedIcons.doc);
     });
   }
 });
@@ -118,12 +134,20 @@ ngDescribe({
   name: 'Async upload directive with no image url',
   modules: 'platanus.upload',
   parentScope: { documentUrl: 'http://some-url.com/file.xls' },
+  mock: {
+    'platanus.upload': {
+      'encodedIcons': {
+        'xls': 'encoded_xls_file'
+      }
+    }
+  },
+  inject: 'encodedIcons',
   element: '<doc-preview document-url="documentUrl"></doc-preview>',
 
   tests: function (deps) {
     it('shows icon for document file',function(){
       var element = deps.element.find('img');
-      expect(element.prop('src')).toMatch('file_extension_xls.png');
+      expect(element.prop('src')).toMatch(deps.encodedIcons.xls);
     });
 
     it('shows file url as default link label',function(){
@@ -157,12 +181,20 @@ ngDescribe({
     documentUrl: 'http://uplaods/22/download',
     documentName: 'my-file-link'
   },
+  mock: {
+    'platanus.upload': {
+      'encodedIcons': {
+        'unknown': 'encoded_unknown_file'
+      }
+    }
+  },
+  inject: 'encodedIcons',
   element: '<doc-preview document-url="documentUrl"></doc-preview>',
 
   tests: function (deps) {
     it('shows icon for unknown file',function(){
       var element = deps.element.find('img');
-      expect(element.prop('src')).toMatch('file_extension_unknown.png');
+      expect(element.prop('src')).toMatch(deps.encodedIcons.unknown);
     });
   }
 });

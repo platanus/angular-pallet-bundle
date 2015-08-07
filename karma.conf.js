@@ -23,14 +23,13 @@ module.exports = function(config) {
       './bower_components/angular/angular.js',
       './bower_components/angular-mocks/angular-mocks.js',
       './bower_components/ng-file-upload/ng-file-upload.js',
-      { pattern: 'src/assets/file-extensions/*.png', watched: false, included: false, served: true },
       './src/index.js',
       './src/*.js',
       './tests/*.js'
     ],
 
     proxies: {
-      '/assets/file-extensions/': '/base/src/assets/file-extensions/'
+      '/': '/base/'
     },
 
     // list of files to exclude
