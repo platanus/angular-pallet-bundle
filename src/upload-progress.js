@@ -20,6 +20,7 @@ function uploadProgress() {
   return directive;
 
   function link(_scope){
+    if(!_scope.progressData) _scope.progressData = { loaded: 0, total: 1 };
 
     _scope.getPercentage = getPercentage;
     _scope.getRawProgress = getRawProgress;

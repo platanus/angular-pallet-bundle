@@ -34,6 +34,8 @@ function asyncUpload(Upload) {
         file: files[0]
       };
 
+      (_scope.progressCallback || angular.noop)({ event: { loaded:0, total:1 } });
+
       Upload
         .upload(params)
         .success(function(data) {

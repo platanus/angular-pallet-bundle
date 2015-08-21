@@ -83,7 +83,7 @@ ngDescribe({
       expect(link.prop('href')).toMatch('http://uploads/84/download');
     });
 
-    it('shows link with lable based on file name param', function() {
+    it('shows link with label based on file name param', function() {
       var link = deps.element.find('a');
       expect(link.text()).toMatch('Other name');
     });
