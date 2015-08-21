@@ -21,7 +21,7 @@ function asyncUploadPreview() {
       '<div>' +
         '<async-upload ' +
           'upload-url="{{uploadUrl}}" ' +
-          'upload-callback="setUploadData($uploadData)" ' +
+          'upload-callback="setUploadData(uploadData)" ' +
           'ng-model="ngModel"></async-upload>' +
         '<doc-preview ' +
           'no-document-text="{{noDocumentText}}" ' +

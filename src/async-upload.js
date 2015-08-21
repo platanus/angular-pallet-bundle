@@ -4,7 +4,7 @@ angular
   .module('platanus.upload')
   .directive('asyncUpload', asyncUpload);
 
-function asyncUpload(Upload, $parse) {
+function asyncUpload(Upload) {
   var directive = {
     template:
       '<div class="async-upload" ngf-change="upload($files)" ngf-select ng-model="files">' +
@@ -13,7 +13,8 @@ function asyncUpload(Upload, $parse) {
     require: 'ngModel',
     scope: {
       uploadUrl: '@',
-      buttonLabel: '@'
+      buttonLabel: '@',
+      uploadCallback: '&'
     },
     link: link,
   };
@@ -24,8 +25,7 @@ function asyncUpload(Upload, $parse) {
     _scope.upload = upload;
     _scope.getButtonLabel = getButtonLabel;
 
-    var callback = _attrs.uploadCallback;
-    if(callback) callback = $parse(callback);
+    var callback = _scope.uploadCallback;
 
     function upload(files) {
       if (!files || !files.length) return;
@@ -39,7 +39,7 @@ function asyncUpload(Upload, $parse) {
         .upload(params)
         .success(function(data) {
           _controller.$setViewValue(data.upload.identifier);
-          if(callback) { callback(_scope.$parent, { $uploadData: data }); }
+          (callback || angular.noop)({ uploadData: data });
         });
     }
 
@@ -49,6 +49,6 @@ function asyncUpload(Upload, $parse) {
   }
 }
 
-asyncUpload.$inject = ['Upload', '$parse'];
+asyncUpload.$inject = ['Upload'];
 
 })();

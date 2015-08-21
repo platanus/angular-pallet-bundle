@@ -10,17 +10,17 @@ ngDescribe({
   element:
     '<async-upload ' +
       'button-label="Upload please" ' +
-      'upload-callback="setUploadData($uploadData)" ' +
+      'upload-callback="setUploadData(uploadData)" ' +
       'upload-url="uploads" ' +
       'ng-model="user.uploadIdentifier">' +
     '</async-upload>',
 
   tests: function (deps) {
-    var successfullyReponse = null;
+    var successfullReponse = null;
 
     describe('loading a file', function(){
       beforeEach(function() {
-        successfullyReponse = {
+        successfullReponse = {
           upload: {
             identifier: 'OjynOLMx2h',
             id: '84'
@@ -29,7 +29,7 @@ ngDescribe({
 
         var callback = {
           success: function(callbackSuccess) {
-            callbackSuccess(successfullyReponse);
+            callbackSuccess(successfullReponse);
             return callback;
           },
           progress: function(callbackProgress) {
@@ -62,7 +62,7 @@ ngDescribe({
       });
 
       it('calls defined callback on parent scope with upload data', function() {
-        expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(successfullyReponse);
+        expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(successfullReponse);
       });
 
       it('sets upload identifier from response', function() {
