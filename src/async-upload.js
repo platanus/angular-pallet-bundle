@@ -14,7 +14,8 @@ function asyncUpload(Upload) {
     scope: {
       uploadUrl: '@',
       buttonLabel: '@',
-      uploadCallback: '&'
+      uploadCallback: '&',
+      progressCallback: '&'
     },
     link: link,
   };
@@ -24,8 +25,6 @@ function asyncUpload(Upload) {
   function link(_scope, _element, _attrs, _controller) {
     _scope.upload = upload;
     _scope.getButtonLabel = getButtonLabel;
-
-    var callback = _scope.uploadCallback;
 
     function upload(files) {
       if (!files || !files.length) return;
@@ -39,7 +38,9 @@ function asyncUpload(Upload) {
         .upload(params)
         .success(function(data) {
           _controller.$setViewValue(data.upload.identifier);
-          (callback || angular.noop)({ uploadData: data });
+          (_scope.uploadCallback || angular.noop)({ uploadData: data });
+        }).progress(function(event){
+          (_scope.progressCallback || angular.noop)({ event: event });
         });
     }
 

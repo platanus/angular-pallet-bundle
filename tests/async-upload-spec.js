@@ -2,44 +2,50 @@ ngDescribe({
   name: 'Async upload directive',
   modules: 'platanus.upload',
   inject: ['Upload'],
-  parentScope: {
-    setUploadData: function(_uploadData) {
-      return _uploadData;
-    }
-  },
   element:
     '<async-upload ' +
       'button-label="Upload please" ' +
       'upload-callback="setUploadData(uploadData)" ' +
+      'progress-callback="setProgress(event)" ' +
       'upload-url="uploads" ' +
       'ng-model="user.uploadIdentifier">' +
     '</async-upload>',
 
   tests: function (deps) {
-    var successfullReponse = null;
+    var successfullUploadReponse = null;
+    var successfullProgressReponse = null;
 
     describe('loading a file', function(){
       beforeEach(function() {
-        successfullReponse = {
+        successfullUploadReponse = {
           upload: {
             identifier: 'OjynOLMx2h',
             id: '84'
           }
         };
 
+        successfullProgressReponse = {
+          loaded: 2334,
+          total: 43452
+        };
+
+        // All functions must return the callback object to be able to
+        // method chaning
+        // success().progress().methodX()..
         var callback = {
           success: function(callbackSuccess) {
-            callbackSuccess(successfullReponse);
+            callbackSuccess(successfullUploadReponse);
             return callback;
           },
-          progress: function(callbackProgress) {
-            callbackProgress();
+          progress: function(callbackProgress){
+            callbackProgress(successfullProgressReponse);
             return callback;
           }
         };
 
         deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
         deps.parentScope.setUploadData = jasmine.createSpy('setUploadData');
+        deps.parentScope.setProgress = jasmine.createSpy('setProgress');
         deps.element.isolateScope().upload(['my-file.txt']);
       });
 
@@ -61,8 +67,12 @@ ngDescribe({
         expect(deps.Upload.upload).toHaveBeenCalledWith(params);
       });
 
-      it('calls defined callback on parent scope with upload data', function() {
-        expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(successfullReponse);
+      it('calls defined upload callback on parent scope with upload data', function() {
+        expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(successfullUploadReponse);
+      });
+
+      it('calls defined progress callback on parent scope with upload data', function() {
+        expect(deps.parentScope.setProgress).toHaveBeenCalledWith(successfullProgressReponse);
       });
 
       it('sets upload identifier from response', function() {
