@@ -5,7 +5,7 @@ ngDescribe({
   element:
     '<async-upload ' +
       'button-label="Upload please" ' +
-      'upload-callback="setUploadData(uploadData)" ' +
+      'success-callback="setUploadData(uploadData)" ' +
       'progress-callback="setProgress(event)" ' +
       'upload-url="uploads" ' +
       'ng-model="user.uploadIdentifier">' +

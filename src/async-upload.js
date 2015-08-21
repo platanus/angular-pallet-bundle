@@ -14,7 +14,7 @@ function asyncUpload(Upload) {
     scope: {
       uploadUrl: '@',
       buttonLabel: '@',
-      uploadCallback: '&',
+      successCallback: '&',
       progressCallback: '&'
     },
     link: link,
@@ -38,7 +38,7 @@ function asyncUpload(Upload) {
         .upload(params)
         .success(function(data) {
           _controller.$setViewValue(data.upload.identifier);
-          (_scope.uploadCallback || angular.noop)({ uploadData: data });
+          (_scope.successCallback || angular.noop)({ uploadData: data });
         }).progress(function(event){
           (_scope.progressCallback || angular.noop)({ event: event });
         });
