@@ -117,7 +117,7 @@ Directive to show the upload progress as percentage value.
 
 ```html
 <upload-progress
-  hide-on-finished="true"
+  hide-on-zero="true"
   progress-data="progressData">
 </upload-progress>
 ```
@@ -130,7 +130,7 @@ Directive to show the upload progress as percentage value.
 
 ##### Optional
 
-- *hide-on-finished:* if present, the directive will be hidden whith progress value equals to 0%.
+- *hide-on-zero:* if present, the directive will be hidden whith progress value equals to 0%.
 
 ### Async Upload Preview Directive
 

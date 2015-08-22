@@ -24,7 +24,7 @@ function asyncUploadPreview() {
           'progress-callback="setProgress(event)" ' +
           'success-callback="setUploadData(uploadData)" ' +
           'ng-model="ngModel"></async-upload>' +
-        '<upload-progress hide-on-finished="true" progress-data="progressData"></upload-progress>' +
+        '<upload-progress hide-on-zero="true" progress-data="progressData"></upload-progress>' +
         '<doc-preview ' +
           'no-document-text="{{noDocumentText}}" ' +
           'render-image-as="{{renderImageAs}}" ' +

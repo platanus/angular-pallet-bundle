@@ -7,12 +7,12 @@ angular
 function uploadProgress() {
   var directive = {
     template:
-      '<div ng-hide="getRawProgress() === 0 && hideOnFinished" class="upload-progress">{{getPercentage()}}</div>',
+      '<div ng-hide="getRawProgress() === 0 && hideOnZero" class="upload-progress">{{getPercentage()}}</div>',
     restrict: 'E',
     replace: true,
     scope: {
       progressData:'=',
-      hideOnFinished:'@'
+      hideOnZero:'@'
     },
     link: link
   };

@@ -21,7 +21,7 @@ ngDescribe({
   modules: 'platanus.upload',
   exposeApi: true,
   parentScope: { progressData: { loaded: 0, total: 9866 }},
-  element: '<upload-progress hide-on-finished="true" progress-data="progressData"></upload-progress>',
+  element: '<upload-progress hide-on-zero="true" progress-data="progressData"></upload-progress>',
 
   tests: function (deps, describeApi) {
     it('hides element hide option set', function () {
