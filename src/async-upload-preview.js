@@ -21,8 +21,10 @@ function asyncUploadPreview() {
       '<div>' +
         '<async-upload ' +
           'upload-url="{{uploadUrl}}" ' +
-          'upload-callback="setUploadData($uploadData)" ' +
+          'progress-callback="setProgress(event)" ' +
+          'success-callback="setUploadData(uploadData)" ' +
           'ng-model="ngModel"></async-upload>' +
+        '<upload-progress hide-on-zero="true" progress-data="progressData"></upload-progress>' +
         '<doc-preview ' +
           'no-document-text="{{noDocumentText}}" ' +
           'render-image-as="{{renderImageAs}}" ' +
@@ -37,6 +39,13 @@ function asyncUploadPreview() {
 
   function link(_scope) {
     _scope.setUploadData = setUploadData;
+    _scope.setProgress = setProgress;
+
+    function setProgress(event) {
+      if(event) {
+        _scope.progressData = event;
+      }
+    }
 
     function setUploadData(uploadData) {
       _scope.uploadData = uploadData.upload;

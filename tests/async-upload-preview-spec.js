@@ -14,6 +14,11 @@ ngDescribe({
       expect(element.attr('class')).toMatch('async-upload');
     });
 
+    it('shows progress directive', function() {
+      var element = deps.element[0].querySelector('.upload-progress');
+      expect(element.textContent).toMatch('0%');
+    });
+
     it('shows doc preview directive', function() {
       var element = deps.element.find('p');
       expect(element.text()).toMatch('no file present');
@@ -52,13 +57,18 @@ ngDescribe({
           'ng-model="user.uploadIdentifier">' +
         '</async-upload>');
 
+      var successfullProgressReponse = {
+        loaded: 43452,
+        total: 43452
+      };
+
       var callback = {
         success: function(callbackSuccess) {
           callbackSuccess(successfullyReponse);
           return callback;
         },
         progress: function(callbackProgress) {
-          callbackProgress();
+          callbackProgress(successfullProgressReponse);
           return callback;
         }
       };
@@ -73,6 +83,11 @@ ngDescribe({
       expect(deps.element.scope().user.uploadIdentifier).toEqual('OjynOLMx2h');
     });
 
+    it('shows progress directive done', function() {
+      var element = deps.element[0].querySelector('.upload-progress');
+      expect(element.textContent).toMatch('100%');
+    });
+
     it('shows preview img icon based on file extension param', function() {
       var img = deps.element.find('img');
       expect(img.prop('src')).toMatch(deps.encodedIcons.xls);
@@ -83,10 +98,9 @@ ngDescribe({
       expect(link.prop('href')).toMatch('http://uploads/84/download');
     });
 
-    it('shows link with lable based on file name param', function() {
+    it('shows link with label based on file name param', function() {
       var link = deps.element.find('a');
       expect(link.text()).toMatch('Other name');
     });
   }
 });
-

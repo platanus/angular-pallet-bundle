@@ -33,7 +33,7 @@ In short, you want to make different requests to upload avatar and file attribut
 - You can have feedback after each file is saved.
 - You can send to the server all the files you want. The final request (when you save the user), will have references to saved resources not the files themselves, making the request lighter.
 
-So, to achieve this, we can use a couple directives I will show next:
+So, to achieve this, we can use a few directives I will show next:
 
 ### Async Upload Directive
 
@@ -108,6 +108,29 @@ By default, will try to infer the file type from the url. For example, if `user.
 - *document-extension:* sometimes, the url does not have information about the file type (for example: `http://server.platan.us/users/9/download`). But, if you know the url file type you can pass it as option.
 - *no-document-text:* custom message to show when the url is empty. By default, will show nothing.
 - *render-image-as:* this option is only for images. You can choose, to show images: as `link` or `thumb`. If this attribute is not present will show thumbnail and link.
+
+### Upload Progress
+
+Directive to show the upload progress as percentage value.
+
+#### Example
+
+```html
+<upload-progress
+  hide-on-zero="true"
+  progress-data="progressData">
+</upload-progress>
+```
+
+#### Directive Options:
+
+##### Mandatory
+
+- *progress-data:* must be a json with the following structure: `{ loaded: XXX, total: XXX }`. `total` value represents the total file size. `loaded` represents bytes loaded at a given time.
+
+##### Optional
+
+- *hide-on-zero:* if present, the directive will be hidden whith progress value equals to 0%.
 
 ### Async Upload Preview Directive
 
@@ -191,6 +214,10 @@ The library does not include the stylesheet. I used the following for my example
 ```css
 <style type="text/css">
 
+.async-upload {
+  display: inline-block;
+}
+
 .doc-preview {
   min-height: 24px;
   clear: both;
@@ -213,6 +240,12 @@ The library does not include the stylesheet. I used the following for my example
 
 .doc-preview .doc-link {
   vertical-align: middle;
+}
+
+.upload-progress {
+  display: inline-block;
+  font-size: 12px;
+  margin-left: 5px;
 }
 
 </style>
