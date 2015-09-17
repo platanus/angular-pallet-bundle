@@ -15,7 +15,8 @@ function asyncUpload(Upload) {
       uploadUrl: '@',
       buttonLabel: '@',
       successCallback: '&',
-      progressCallback: '&'
+      progressCallback: '&',
+      errorCallback: '&'
     },
     link: link,
   };
@@ -34,15 +35,19 @@ function asyncUpload(Upload) {
         file: files[0]
       };
 
-      (_scope.progressCallback || angular.noop)({ event: { loaded:0, total:1 } });
+      (_scope.progressCallback || angular.noop)({ event: { loaded: 0, total: 1 } });
 
-      Upload
-        .upload(params)
-        .success(function(data) {
+      Upload.upload(params).success(function(data) {
           _controller.$setViewValue(data.upload.identifier);
           (_scope.successCallback || angular.noop)({ uploadData: data });
+
         }).progress(function(event){
           (_scope.progressCallback || angular.noop)({ event: event });
+
+        }).error(function(data, status) {
+          var errorData = { error: data, status: status };
+          _controller.$setViewValue(null);
+          (_scope.errorCallback || angular.noop)({ errorData: errorData });
         });
     }
 

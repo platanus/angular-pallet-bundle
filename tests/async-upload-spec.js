@@ -7,78 +7,111 @@ ngDescribe({
       'button-label="Upload please" ' +
       'success-callback="setUploadData(uploadData)" ' +
       'progress-callback="setProgress(event)" ' +
+      'error-callback="setError(errorData)" ' +
       'upload-url="uploads" ' +
       'ng-model="user.uploadIdentifier">' +
     '</async-upload>',
 
   tests: function (deps) {
-    var successfullUploadReponse = null;
-    var successfullProgressReponse = null;
+    var successfullUploadReponse = {
+      upload: {
+        identifier: 'OjynOLMx2h',
+        id: '84'
+      }
+    };
+
+    var successfullProgressReponse = {
+      loaded: 2334,
+      total: 43452
+    };
+
+    var errorResponse = {
+      error: 'some error',
+      status: 500,
+    };
 
     describe('loading a file', function(){
-      beforeEach(function() {
-        successfullUploadReponse = {
-          upload: {
-            identifier: 'OjynOLMx2h',
-            id: '84'
-          }
-        };
+      describe('with successful response', function() {
+        beforeEach(function() {
+          // All functions must return the callback object to be able to method chaning
+          // success().progress().methodX()..
+          var callback = {
+            success: function(callbackSuccess) {
+              callbackSuccess(successfullUploadReponse);
+              return callback;
+            },
+            progress: function(callbackProgress){
+              callbackProgress(successfullProgressReponse);
+              return callback;
+            },
+            error: function() { return callback; }
+          };
 
-        successfullProgressReponse = {
-          loaded: 2334,
-          total: 43452
-        };
+          deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
+          deps.parentScope.setUploadData = jasmine.createSpy('setUploadData');
+          deps.parentScope.setProgress = jasmine.createSpy('setProgress');
+          deps.element.isolateScope().upload(['my-file.txt']);
+        });
 
-        // All functions must return the callback object to be able to
-        // method chaning
-        // success().progress().methodX()..
-        var callback = {
-          success: function(callbackSuccess) {
-            callbackSuccess(successfullUploadReponse);
-            return callback;
-          },
-          progress: function(callbackProgress){
-            callbackProgress(successfullProgressReponse);
-            return callback;
-          }
-        };
+        it('updates DOM using binding', function () {
+          var element = deps.element.find('div');
 
-        deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
-        deps.parentScope.setUploadData = jasmine.createSpy('setUploadData');
-        deps.parentScope.setProgress = jasmine.createSpy('setProgress');
-        deps.element.isolateScope().upload(['my-file.txt']);
+          expect(element.attr('ngf-select') !== undefined).toBe(true);
+          expect(element.attr('ng-model') !== undefined).toBe(true);
+          expect(element.attr('ngf-change') !== undefined).toBe(true);
+        });
+
+        it('change custom button label', function() {
+          var element = deps.element.find('button');
+          expect(element.text()).toBe('Upload please');
+        });
+
+        it('uploads a file with ngUploadFile service', function() {
+          var params = { url: 'uploads', file: 'my-file.txt' };
+          expect(deps.Upload.upload).toHaveBeenCalledWith(params);
+        });
+
+        it('calls defined upload callback on parent scope with upload data', function() {
+          expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(successfullUploadReponse);
+        });
+
+        it('calls defined progress callback on parent scope', function() {
+          expect(deps.parentScope.setProgress).toHaveBeenCalledWith(successfullProgressReponse);
+        });
+
+        it('sets upload identifier from response', function() {
+          var scope = deps.element.scope();
+          expect(scope.user.uploadIdentifier).toEqual('OjynOLMx2h');
+        });
       });
 
-      it('updates DOM using binding', function () {
-        var element = deps.element.find('div');
+      describe('with error response', function() {
+        beforeEach(function() {
+          var callback = {
+            success: function() { return callback; },
+            progress: function() { return callback; },
+            error: function(callbackError){
+              callbackError(errorResponse.error, errorResponse.status);
+              return callback;
+            }
+          };
 
-        expect(element.attr('ngf-select') !== undefined).toBe(true);
-        expect(element.attr('ng-model') !== undefined).toBe(true);
-        expect(element.attr('ngf-change') !== undefined).toBe(true);
-      });
+          var scope = deps.element.scope();
+          scope.user = { uploadIdentifier: 'oldIdentifier' };
 
-      it('change custom button label', function() {
-        var element = deps.element.find('button');
-        expect(element.text()).toBe('Upload please');
-      });
+          deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
+          deps.parentScope.setError = jasmine.createSpy('setError');
+          deps.element.isolateScope().upload(['my-file.txt']);
+        });
 
-      it('uploads a file with ngUploadFile service', function() {
-        var params = { url: 'uploads', file: 'my-file.txt' };
-        expect(deps.Upload.upload).toHaveBeenCalledWith(params);
-      });
+        it('calls defined error callback on parent scope with error data', function() {
+          expect(deps.parentScope.setError).toHaveBeenCalledWith(errorResponse);
+        });
 
-      it('calls defined upload callback on parent scope with upload data', function() {
-        expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(successfullUploadReponse);
-      });
-
-      it('calls defined progress callback on parent scope with upload data', function() {
-        expect(deps.parentScope.setProgress).toHaveBeenCalledWith(successfullProgressReponse);
-      });
-
-      it('sets upload identifier from response', function() {
-        var scope = deps.element.scope();
-        deps.element.isolateScope().upload(['my-file.txt']);
-        expect(scope.user.uploadIdentifier).toEqual('OjynOLMx2h');
+        it('calls defined error callback on parent scope with error data', function() {
+          var scope = deps.element.scope();
+          expect(scope.user.uploadIdentifier).toBeNull();
+        });
       });
     });
   }

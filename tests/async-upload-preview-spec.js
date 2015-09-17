@@ -70,7 +70,8 @@ ngDescribe({
         progress: function(callbackProgress) {
           callbackProgress(successfullProgressReponse);
           return callback;
-        }
+        },
+        error: function() { return callback; }
       };
 
       deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
