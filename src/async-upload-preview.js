@@ -15,7 +15,8 @@ function asyncUploadPreview() {
       uploadUrl: '@',
       renderImageAs: '@',
       noDocumentText: '@',
-      documentExtension: '@'
+      documentExtension: '@',
+      progressType: '@'
     },
     template:
       '<div>' +
@@ -26,7 +27,7 @@ function asyncUploadPreview() {
           'success-callback="setUploadData(uploadData)" ' +
           'error-callback="setError(errorData)" ' +
           'ng-model="ngModel"></async-upload>' +
-        '<upload-progress hide-on-zero="true" progress-data="progressData"></upload-progress>' +
+        '<upload-progress type="{{progressType}}" hide-on-zero="true" progress-data="progressData"></upload-progress>' +
         '<doc-preview ' +
           'no-document-text="{{noDocumentText}}" ' +
           'render-image-as="{{renderImageAs}}" ' +
