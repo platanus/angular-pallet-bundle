@@ -47,6 +47,7 @@ function asyncUpload(Upload) {
         }).error(function(data, status) {
           var errorData = { error: data, status: status };
           _controller.$setViewValue(null);
+          console.error(errorData);
           (_scope.errorCallback || angular.noop)({ errorData: errorData });
         });
     }

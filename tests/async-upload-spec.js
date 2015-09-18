@@ -97,7 +97,7 @@ ngDescribe({
           };
 
           var scope = deps.element.scope();
-          scope.user = { uploadIdentifier: 'oldIdentifier' };
+          scope.user = { uploadIdentifier: 'old identifier' };
 
           deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
           deps.parentScope.setError = jasmine.createSpy('setError');
