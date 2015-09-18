@@ -21,7 +21,7 @@ function asyncUploadPreview() {
       '<div>' +
         '<async-upload ' +
           'upload-url="{{uploadUrl}}" ' +
-          'start-callback="onStart()" ' +
+          'start-callback="setInitialState()" ' +
           'progress-callback="setProgress(event)" ' +
           'success-callback="setUploadData(uploadData)" ' +
           'error-callback="setError(errorData)" ' +
@@ -43,12 +43,7 @@ function asyncUploadPreview() {
     _scope.setUploadData = setUploadData;
     _scope.setProgress = setProgress;
     _scope.setError = setError;
-    _scope.onStart = onStart;
-
-    function setInitialState() {
-      _scope.uploadData = null;
-      _scope.progressData = { loaded: 0, total: 1 };
-    }
+    _scope.setInitialState = setInitialState;
 
     function setProgress(event) {
       if(event) {
@@ -57,11 +52,13 @@ function asyncUploadPreview() {
     }
 
     function setError(errorData) {
-      setInitialState();
+      _scope.uploadData = null;
+      _scope.progressData.error = true;
     }
 
-    function onStart() {
-      setInitialState();
+    function setInitialState() {
+      _scope.uploadData = null;
+      _scope.progressData = { loaded: 0, total: 1, error: false };
     }
 
     function setUploadData(uploadData) {
