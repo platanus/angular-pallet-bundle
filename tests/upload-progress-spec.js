@@ -2,7 +2,7 @@ ngDescribe({
   name: 'Angular-progress display progress',
   modules: 'platanus.upload',
   exposeApi: true,
-  parentScope: { progressData: { loaded: 3456, total: 9866 }},
+  parentScope: { progressData: { loaded: 3500, total: 10000 }},
   element: '<upload-progress progress-data="progressData"></upload-progress>',
 
   tests: function (deps) {
@@ -20,7 +20,7 @@ ngDescribe({
   name: 'Angular-progress hide option',
   modules: 'platanus.upload',
   exposeApi: true,
-  parentScope: { progressData: { loaded: 0, total: 9866 }},
+  parentScope: { progressData: { loaded: 0, total: 10000 }},
   element: '<upload-progress hide-on-zero="true" progress-data="progressData"></upload-progress>',
 
   tests: function (deps, describeApi) {

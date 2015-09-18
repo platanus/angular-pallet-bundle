@@ -16,7 +16,7 @@ ngDescribe({
 
     it('shows progress directive', function() {
       var element = deps.element[0].querySelector('.upload-progress');
-      expect(element.textContent).toMatch('0%');
+      expect(element.textContent).toEqual('0%');
     });
 
     it('shows doc preview directive', function() {
@@ -37,7 +37,7 @@ ngDescribe({
       }
     }
   },
-  inject: ['Upload', '$compile', 'encodedIcons'],
+  inject: ['Upload', 'encodedIcons'],
 
   tests: function(deps, exposeApi) {
     beforeEach(function() {
@@ -58,8 +58,8 @@ ngDescribe({
         '</async-upload>');
 
       var successfullProgressReponse = {
-        loaded: 43452,
-        total: 43452
+        loaded: 5000,
+        total: 5000
       };
 
       var callback = {
@@ -70,7 +70,8 @@ ngDescribe({
         progress: function(callbackProgress) {
           callbackProgress(successfullProgressReponse);
           return callback;
-        }
+        },
+        error: function() { return callback; }
       };
 
       deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
@@ -85,7 +86,7 @@ ngDescribe({
 
     it('shows progress directive done', function() {
       var element = deps.element[0].querySelector('.upload-progress');
-      expect(element.textContent).toMatch('100%');
+      expect(element.textContent).toEqual('100%');
     });
 
     it('shows preview img icon based on file extension param', function() {
@@ -101,6 +102,67 @@ ngDescribe({
     it('shows link with label based on file name param', function() {
       var link = deps.element.find('a');
       expect(link.text()).toMatch('Other name');
+    });
+  }
+});
+
+ngDescribe({
+  name: 'Async upload preview directive failing upload',
+  modules: 'platanus.upload',
+  exposeApi: true,
+  parentScope: {
+    user: {
+      uploadIdentifier: 'OjynOLMx2h' // Setting identifier to simulate a previuos successful upload.
+    }
+  },
+  inject: ['Upload'],
+
+  tests: function(deps, exposeApi) {
+    beforeEach(function() {
+      exposeApi.setupElement(
+        '<async-upload-preview ' +
+          'upload-url="uploads"' +
+          'render-image-as="thumb"' +
+          'ng-model="user.uploadIdentifier">' +
+        '</async-upload>');
+
+      // Setting uploadData on asyncUploadPreview directive scope
+      // to simulate a previuos successful upload.
+      deps.element.isolateScope().uploadData = {
+        identifier: 'OjynOLMx2h',
+        documentName: 'Doc name',
+        fileExtension: 'png',
+        downloadUrl: 'http://uploads/84/download'
+      };
+
+      var errorResponse = {
+        error: 'some error',
+        status: 500,
+      };
+
+      var callback = {
+        success: function() { return callback; },
+        progress: function() { return callback; },
+        error: function(callbackError){
+          callbackError(errorResponse.error, errorResponse.status);
+          return callback;
+        }
+      };
+
+      deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
+      var asyncDirective = deps.element.find('div');
+      asyncDirective.scope().upload(['my-file.txt']);
+
+      deps.element.scope().$apply();
+    });
+
+    it('cleans models upload idenfitier', function() {
+      expect(deps.element.scope().user.uploadIdentifier).toEqual(null);
+    });
+
+    it('hides thumb', function() {
+      var img = deps.element.find('img');
+      expect(img.prop('src')).toBe(undefined);
     });
   }
 });

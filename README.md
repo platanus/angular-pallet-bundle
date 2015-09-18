@@ -49,7 +49,11 @@ This directive allows you to perform a `POST` to a given endpoint (`/uploads` on
 </async-upload>
 
 <async-upload
-  upload-url="uploads"
+  upload-url="api/uploads"
+  start-callback="startCallback()"
+  success-callback="successCallback(uploadData)"
+  progress-callback="progressCallback(event)"
+  error-callback="errorCallback(errorData)"
   ng-model="user.fileIdentifier">
 </async-upload>
 ```
@@ -75,6 +79,10 @@ In order to work the `POST /uploads` response must be a json with the following 
 ##### Optional
 
 - *button-label:* you can pass this key as an HTML attribute to customize the upload button label. "Select File..." is the default value.
+- *start-callback:* to perform your own operations when upload process begins.
+- *success-callback:* to perform your own operations after a successful upload.
+- *progress-callback:* it gives you information about upload progress.
+- *error-callback:* to perform operations after a failed upload.
 
 ### Doc Preview Directive
 
@@ -176,8 +184,8 @@ In order to make this directive work, the `POST /uploads` response must be a jso
 
 ##### Optional
 
-- *no-document-text:* same as `ng-model` on `docPreview` directive.
-- *render-image-as:* same as `ng-model` on `docPreview` directive.
+- *no-document-text:* same as `no-document-text` on `docPreview` directive.
+- *render-image-as:* same as `render-image-as` on `docPreview` directive.
 
 ## Use Case Example
 

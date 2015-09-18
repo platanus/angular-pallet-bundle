@@ -35,6 +35,4 @@ function uploadProgress() {
   }
 }
 
-uploadProgress.$inject = [];
-
 })();
