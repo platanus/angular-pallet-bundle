@@ -2,7 +2,7 @@ ngDescribe({
   name: 'Angular-progress display progress',
   modules: 'platanus.upload',
   exposeApi: true,
-  parentScope: { progressData: { loaded: 3500, total: 10000 }},
+  parentScope: { progressData: { loaded: 3500, total: 10000 } },
   element: '<upload-progress progress-data="progressData"></upload-progress>',
 
   tests: function (deps) {
@@ -24,7 +24,7 @@ ngDescribe({
   name: 'Angular-progress completed progress',
   modules: 'platanus.upload',
   exposeApi: true,
-  parentScope: { progressData: { loaded: 10000, total: 10000 }},
+  parentScope: { progressData: { loaded: 10000, total: 10000 } },
   element: '<upload-progress progress-data="progressData"></upload-progress>',
 
   tests: function (deps) {
@@ -39,10 +39,24 @@ ngDescribe({
 });
 
 ngDescribe({
+  name: 'Angular-progress with errors',
+  modules: 'platanus.upload',
+  exposeApi: true,
+  parentScope: { progressData: { loaded: 3500, total: 10000, error: true } },
+  element: '<upload-progress progress-data="progressData"></upload-progress>',
+
+  tests: function (deps) {
+    it('shows error class', function(){
+      expect(deps.element.hasClass('error')).toBe(true);
+    });
+  }
+});
+
+ngDescribe({
   name: 'Angular-progress hide option',
   modules: 'platanus.upload',
   exposeApi: true,
-  parentScope: { progressData: { loaded: 0, total: 10000 }},
+  parentScope: { progressData: { loaded: 0, total: 10000 } },
   element: '<upload-progress hide-on-zero="true" progress-data="progressData"></upload-progress>',
 
   tests: function (deps, describeApi) {

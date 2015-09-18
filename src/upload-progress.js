@@ -8,7 +8,7 @@ function uploadProgress() {
   var directive = {
     template:
       '<div ng-hide="getRawProgress() === 0 && hideOnZero" ' +
-        'ng-class="{ \'in-progress\': inProgress(), \'completed\': isCompleted() }" ' +
+        'ng-class="{ \'in-progress\': inProgress(), \'completed\': isCompleted(), \'error\': hasErrors() }" ' +
         'class="upload-progress indicator">' +
         '{{getPercentage()}}' +
       '</div>',
@@ -24,12 +24,13 @@ function uploadProgress() {
   return directive;
 
   function link(_scope) {
-    if(!_scope.progressData) _scope.progressData = { loaded: 0, total: 1 };
+    if(!_scope.progressData) _scope.progressData = { loaded: 0, total: 1, error: false };
 
     _scope.getPercentage = getPercentage;
     _scope.getRawProgress = getRawProgress;
     _scope.inProgress = inProgress;
     _scope.isCompleted = isCompleted;
+    _scope.hasErrors = hasErrors;
 
     function getRawProgress() {
       return parseInt(100 * (_scope.progressData.loaded / _scope.progressData.total));
@@ -37,11 +38,15 @@ function uploadProgress() {
 
     function inProgress() {
       var progress = getRawProgress();
-      return (progress > 0 && progress < 100);
+      return (!_scope.progressData.error && (progress > 0 && progress < 100));
     }
 
     function isCompleted() {
-      return getRawProgress() === 100;
+      return (!_scope.progressData.error && getRawProgress() === 100);
+    }
+
+    function hasErrors() {
+      return !!_scope.progressData.error;
     }
 
     function getPercentage() {

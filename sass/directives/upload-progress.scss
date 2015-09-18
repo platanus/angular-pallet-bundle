@@ -21,5 +21,9 @@
     &.completed {
       background-color: #05A25D;
     }
+
+    &.error {
+      background-color: #DD4937;
+    }
   }
 }
