@@ -17,6 +17,9 @@ Include the JS files in your project and the library as an Angular Dependency
 angular.module('yourapp', ['platanus.upload']);
 ```
 
+> The library comes with a proposed stylesheet under `/dist/angular-upload.css`. You can use it or
+> create your own.
+
 ## Usage
 
 To make it simple, I'm going to give a use case example...
@@ -216,48 +219,6 @@ So, to satisfy the use case, We can have a form like this:
 ```
 
 <img src="./docs/images/use-case-example.png" />
-
-The library does not include the stylesheet. I used the following for my example...
-
-```css
-<style type="text/css">
-
-.async-upload {
-  display: inline-block;
-}
-
-.doc-preview {
-  min-height: 24px;
-  clear: both;
-  margin: 10px 0 10px 0;
-}
-
-.doc-preview .image-preview {
-  max-height: 150px;
-  border: solid 1px #999;
-  padding: 5px;
-}
-
-.doc-preview .image-preview.icon {
-  float: left;
-  width: 24px;
-  height: 24px;
-  padding: 0 5px 0 0;
-  border: none;
-}
-
-.doc-preview .doc-link {
-  vertical-align: middle;
-}
-
-.upload-progress {
-  display: inline-block;
-  font-size: 12px;
-  margin-left: 5px;
-}
-
-</style>
-```
 
 ## Contributing
 

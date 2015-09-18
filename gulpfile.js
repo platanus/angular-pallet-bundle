@@ -8,7 +8,9 @@ var gulp = require('gulp'),
     size = require('gulp-size'),
     ngannotate = require('gulp-ng-annotate'),
     npm = require('npm'),
-    prompt = require('gulp-prompt');
+    prompt = require('gulp-prompt'),
+    sourcemaps = require('gulp-sourcemaps'),
+    sass = require('gulp-sass');
 
 var paths = {
   src: ['./src/index.js','./src/*.js'],
@@ -23,7 +25,7 @@ gulp.task('lint', function() {
     .pipe(jshint.reporter('jshint-stylish'));
 });
 
-gulp.task('build', ['lint'], function() {
+gulp.task('build', ['lint', 'sass'], function() {
   return gulp.src(paths.src)
     .pipe(ngannotate())
     .pipe(uglify())
@@ -31,6 +33,14 @@ gulp.task('build', ['lint'], function() {
     .pipe(size())
     .pipe(gulp.dest('dist'))
     .pipe(notify('Build finished'));
+});
+
+gulp.task('sass', function() {
+  gulp.src('./sass/*.scss')
+    .pipe(sourcemaps.init())
+      .pipe(sass({errLogToConsole: true}))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./dist/'));
 });
 
 gulp.task('bump', function (cb) {
