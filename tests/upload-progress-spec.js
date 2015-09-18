@@ -36,7 +36,7 @@ ngDescribe({
       expect(deps.element.text()).toBe('100%');
     });
 
-    it('shows in-progress class', function(){
+    it('shows completed class', function(){
       expect(deps.element.hasClass('completed')).toBe(true);
     });
   }
@@ -64,7 +64,7 @@ ngDescribe({
   element: '<upload-progress hide-on-zero="true" progress-data="progressData"></upload-progress>',
 
   tests: function (deps, describeApi) {
-    it('hides element hide option set', function () {
+    it('hides element hide on zero option set', function () {
       expect(deps.element.hasClass('ng-hide')).toBe(true);
     });
 
@@ -76,6 +76,19 @@ ngDescribe({
       it('element should be visible', function () {
         expect(deps.element.hasClass('ng-hide')).toBe(false);
       });
+    });
+  }
+});
+
+ngDescribe({
+  name: 'Angular-progress indicator hide on complete option',
+  modules: 'platanus.upload',
+  parentScope: { progressData: { loaded: 10000, total: 10000 } },
+  element: '<upload-progress hide-on-complete="true" progress-data="progressData"></upload-progress>',
+
+  tests: function (deps) {
+    it('hides element hide option set', function () {
+      expect(deps.element.hasClass('ng-hide')).toBe(true);
     });
   }
 });
