@@ -43,6 +43,11 @@ function asyncUploadPreview() {
     _scope.setProgress = setProgress;
     _scope.setError = setError;
 
+    function setInitialState() {
+      _scope.uploadData = null;
+      _scope.progressData = { loaded: 0, total: 1 };
+    }
+
     function setProgress(event) {
       if(event) {
         _scope.progressData = event;
@@ -50,8 +55,7 @@ function asyncUploadPreview() {
     }
 
     function setError(errorData) {
-      _scope.uploadData = null;
-      _scope.progressData = { loaded: 0, total: 1 };
+      setInitialState();
     }
 
     function setUploadData(uploadData) {

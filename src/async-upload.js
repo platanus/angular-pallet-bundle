@@ -14,6 +14,7 @@ function asyncUpload(Upload) {
     scope: {
       uploadUrl: '@',
       buttonLabel: '@',
+      startCallback: '&',
       successCallback: '&',
       progressCallback: '&',
       errorCallback: '&'
@@ -35,7 +36,7 @@ function asyncUpload(Upload) {
         file: files[0]
       };
 
-      (_scope.progressCallback || angular.noop)({ event: { loaded: 0, total: 1 } });
+      (_scope.startCallback || angular.noop)();
 
       Upload.upload(params).success(function(data) {
           _controller.$setViewValue(data.upload.identifier);

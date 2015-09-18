@@ -5,6 +5,7 @@ ngDescribe({
   element:
     '<async-upload ' +
       'button-label="Upload please" ' +
+      'start-callback="onStart()" ' +
       'success-callback="setUploadData(uploadData)" ' +
       'progress-callback="setProgress(event)" ' +
       'error-callback="setError(errorData)" ' +
@@ -50,6 +51,7 @@ ngDescribe({
           deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
           deps.parentScope.setUploadData = jasmine.createSpy('setUploadData');
           deps.parentScope.setProgress = jasmine.createSpy('setProgress');
+          deps.parentScope.onStart = jasmine.createSpy('onStart');
           deps.element.isolateScope().upload(['my-file.txt']);
         });
 
@@ -69,6 +71,10 @@ ngDescribe({
         it('uploads a file with ngUploadFile service', function() {
           var params = { url: 'uploads', file: 'my-file.txt' };
           expect(deps.Upload.upload).toHaveBeenCalledWith(params);
+        });
+
+        it('calls defined start callback on parent scope', function() {
+          expect(deps.parentScope.setUploadData).toHaveBeenCalled();
         });
 
         it('calls defined upload callback on parent scope with upload data', function() {
