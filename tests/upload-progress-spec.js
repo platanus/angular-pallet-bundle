@@ -1,5 +1,5 @@
 ngDescribe({
-  name: 'Angular-progress display progress',
+  name: 'Angular-progress indicator in progress',
   modules: 'platanus.upload',
   exposeApi: true,
   parentScope: { progressData: { loaded: 3500, total: 10000 } },
@@ -17,11 +17,15 @@ ngDescribe({
     it('shows in-progress class', function(){
       expect(deps.element.hasClass('in-progress')).toBe(true);
     });
+
+    it('shows inner-bar', function() {
+      expect(deps.element.html()).not.toMatch('inner-bar');
+    });
   }
 });
 
 ngDescribe({
-  name: 'Angular-progress completed progress',
+  name: 'Angular-progress indicator completed',
   modules: 'platanus.upload',
   exposeApi: true,
   parentScope: { progressData: { loaded: 10000, total: 10000 } },
@@ -39,7 +43,7 @@ ngDescribe({
 });
 
 ngDescribe({
-  name: 'Angular-progress with errors',
+  name: 'Angular-progress indicator with errors',
   modules: 'platanus.upload',
   exposeApi: true,
   parentScope: { progressData: { loaded: 3500, total: 10000, error: true } },
@@ -53,7 +57,7 @@ ngDescribe({
 });
 
 ngDescribe({
-  name: 'Angular-progress hide option',
+  name: 'Angular-progress indicator hide option',
   modules: 'platanus.upload',
   exposeApi: true,
   parentScope: { progressData: { loaded: 0, total: 10000 } },
@@ -72,6 +76,24 @@ ngDescribe({
       it('element should be visible', function () {
         expect(deps.element.hasClass('ng-hide')).toBe(false);
       });
+    });
+  }
+});
+
+ngDescribe({
+  name: 'Angular-progress bar',
+  modules: 'platanus.upload',
+  exposeApi: true,
+  parentScope: { progressData: { loaded: 3500, total: 10000 } },
+  element: '<upload-progress type="bar" progress-data="progressData"></upload-progress>',
+
+  tests: function (deps) {
+    it('render progress bar', function() {
+      expect(deps.element.text()).toBe('');
+    });
+
+    it('shows inner-bar', function() {
+      expect(deps.element.html()).toMatch('inner-bar');
     });
   }
 });

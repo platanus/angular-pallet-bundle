@@ -8,15 +8,22 @@ function uploadProgress() {
   var directive = {
     template:
       '<div ng-hide="getRawProgress() === 0 && hideOnZero" ' +
-        'ng-class="{ \'in-progress\': inProgress(), \'completed\': isCompleted(), \'error\': hasErrors() }" ' +
-        'class="upload-progress indicator">' +
-        '{{getPercentage()}}' +
+        'ng-class="{ ' +
+          '\'bar\': barType(), ' +
+          '\'indicator\': !barType(), ' +
+          '\'in-progress\': inProgress(), ' +
+          '\'completed\': isCompleted(), ' +
+          '\'error\': hasErrors() }" ' +
+        'class="upload-progress">' +
+        '<div ng-if="!barType()">{{getPercentage()}}</div>' +
+        '<div ng-if="barType()" style="width:{{getPercentage()}}" class="inner-bar"></div>' +
       '</div>',
     restrict: 'E',
     replace: true,
     scope: {
-      progressData:'=',
-      hideOnZero:'@'
+      progressData: '=',
+      hideOnZero: '@',
+      type: '@'
     },
     link: link
   };
@@ -31,6 +38,7 @@ function uploadProgress() {
     _scope.inProgress = inProgress;
     _scope.isCompleted = isCompleted;
     _scope.hasErrors = hasErrors;
+    _scope.barType = barType;
 
     function getRawProgress() {
       return parseInt(100 * (_scope.progressData.loaded / _scope.progressData.total));
@@ -51,6 +59,10 @@ function uploadProgress() {
 
     function getPercentage() {
       return getRawProgress() + '%';
+    }
+
+    function barType() {
+      return _scope.type === 'bar';
     }
   }
 }
