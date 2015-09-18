@@ -13,6 +13,28 @@ ngDescribe({
     it('render progress', function(){
       expect(deps.element.text()).toBe('35%');
     });
+
+    it('shows in-progress class', function(){
+      expect(deps.element.hasClass('in-progress')).toBe(true);
+    });
+  }
+});
+
+ngDescribe({
+  name: 'Angular-progress completed progress',
+  modules: 'platanus.upload',
+  exposeApi: true,
+  parentScope: { progressData: { loaded: 10000, total: 10000 }},
+  element: '<upload-progress progress-data="progressData"></upload-progress>',
+
+  tests: function (deps) {
+    it('render progress', function(){
+      expect(deps.element.text()).toBe('100%');
+    });
+
+    it('shows in-progress class', function(){
+      expect(deps.element.hasClass('completed')).toBe(true);
+    });
   }
 });
 

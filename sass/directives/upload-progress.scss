@@ -1,5 +1,25 @@
 .upload-progress {
-  display: inline-block;
-  font-size: 12px;
   margin-left: 5px;
+
+  &.indicator {
+    display: inline-block;
+    font-size: 12px;
+    color: #FFF;
+    font-weight: bold;
+    padding: 2px 4px;
+    -webkit-border-radius: 3px;
+    -webkit-border-top-left-radius: 3px;
+    -moz-border-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    border-radius: 3px;
+    border-top-left-radius: 3px;
+
+    &.in-progress {
+      background-color: #FF9900;
+    }
+
+    &.completed {
+      background-color: #05A25D;
+    }
+  }
 }
