@@ -86,7 +86,7 @@ ngDescribe({
 
     it('shows progress directive done', function() {
       var element = deps.element[0].querySelector('.upload-progress');
-      expect(element.textContent).toEqual('100%');
+      expect(element.textContent).toEqual('95%');
     });
 
     it('shows preview img icon based on file extension param', function() {

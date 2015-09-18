@@ -40,16 +40,23 @@ function asyncUpload(Upload) {
 
       Upload.upload(params).success(function(data) {
           _controller.$setViewValue(data.upload.identifier);
+          (_scope.progressCallback || angular.noop)({ event: { loaded: 1, total: 1 } });
           (_scope.successCallback || angular.noop)({ uploadData: data });
 
         }).progress(function(event){
-          (_scope.progressCallback || angular.noop)({ event: event });
+          var progressData = {
+            loaded: (event.loaded * 0.95),
+            total: event.total
+          };
+
+          (_scope.progressCallback || angular.noop)({ event: progressData });
 
         }).error(function(data, status) {
           var errorData = { error: data, status: status };
           _controller.$setViewValue(null);
-          console.error(errorData);
+          (_scope.progressCallback || angular.noop)({ event: { loaded: 1, total: 1 } });
           (_scope.errorCallback || angular.noop)({ errorData: errorData });
+          console.error(errorData);
         });
     }
 
