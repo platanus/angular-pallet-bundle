@@ -15,18 +15,24 @@ function asyncUploadPreview() {
       uploadUrl: '@',
       renderImageAs: '@',
       noDocumentText: '@',
-      documentExtension: '@'
+      documentExtension: '@',
+      progressType: '@'
     },
     template:
       '<div>' +
         '<async-upload ' +
           'upload-url="{{uploadUrl}}" ' +
-          'start-callback="onStart()" ' +
+          'start-callback="setInitialState()" ' +
           'progress-callback="setProgress(event)" ' +
           'success-callback="setUploadData(uploadData)" ' +
           'error-callback="setError(errorData)" ' +
-          'ng-model="ngModel"></async-upload>' +
-        '<upload-progress hide-on-zero="true" progress-data="progressData"></upload-progress>' +
+          'ng-model="ngModel">' +
+        '</async-upload>' +
+        '<upload-progress type="{{progressType}}" ' +
+          'hide-on-complete="true" ' +
+          'hide-on-zero="true" ' +
+          'progress-data="progressData">' +
+        '</upload-progress>' +
         '<doc-preview ' +
           'no-document-text="{{noDocumentText}}" ' +
           'render-image-as="{{renderImageAs}}" ' +
@@ -43,12 +49,7 @@ function asyncUploadPreview() {
     _scope.setUploadData = setUploadData;
     _scope.setProgress = setProgress;
     _scope.setError = setError;
-    _scope.onStart = onStart;
-
-    function setInitialState() {
-      _scope.uploadData = null;
-      _scope.progressData = { loaded: 0, total: 1 };
-    }
+    _scope.setInitialState = setInitialState;
 
     function setProgress(event) {
       if(event) {
@@ -57,21 +58,24 @@ function asyncUploadPreview() {
     }
 
     function setError(errorData) {
-      setInitialState();
+      _scope.uploadData = null;
+      _scope.progressData.error = true;
     }
 
-    function onStart() {
-      setInitialState();
+    function setInitialState() {
+      _scope.uploadData = null;
+      _scope.progressData = { loaded: 0, total: 1, error: false };
     }
 
     function setUploadData(uploadData) {
-      _scope.uploadData = uploadData.upload;
       var data = (uploadData.upload || uploadData);
 
-      _scope.uploadData.identifier = data.identifier;
-      _scope.uploadData.documentName = (data.file_name || data.fileName);
-      _scope.uploadData.fileExtension = (data.file_extension || data.fileExtension);
-      _scope.uploadData.downloadUrl = (data.download_url || data.downloadUrl);
+      _scope.uploadData = {
+        identifier: data.identifier,
+        documentName: (data.file_name || data.fileName),
+        fileExtension: (data.file_extension || data.fileExtension),
+        downloadUrl: (data.download_url || data.downloadUrl)
+      };
 
       if(!_scope.uploadData.identifier || !_scope.uploadData.documentName ||
         !_scope.uploadData.fileExtension || !_scope.uploadData.downloadUrl) {

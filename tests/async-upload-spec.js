@@ -22,8 +22,8 @@ ngDescribe({
     };
 
     var successfullProgressReponse = {
-      loaded: 2334,
-      total: 43452
+      loaded: 1,
+      total: 1
     };
 
     var errorResponse = {

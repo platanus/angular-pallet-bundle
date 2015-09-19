@@ -129,6 +129,8 @@ Directive to show the upload progress as percentage value.
 ```html
 <upload-progress
   hide-on-zero="true"
+  hide-on-complete="true"
+  type="bar"
   progress-data="progressData">
 </upload-progress>
 ```
@@ -137,11 +139,13 @@ Directive to show the upload progress as percentage value.
 
 ##### Mandatory
 
-- *progress-data:* must be a json with the following structure: `{ loaded: XXX, total: XXX }`. `total` value represents the total file size. `loaded` represents bytes loaded at a given time.
+- *progress-data:* must be a json with the following structure: `{ loaded: XXX, total: XXX }`. `total` value represents the total file size. `loaded` represents bytes loaded at a given time. You can pass `error: true` key to add the error class if you want.
 
 ##### Optional
 
-- *hide-on-zero:* if present, the directive will be hidden whith progress value equals to 0%.
+- *hide-on-zero:* if present, the directive will be hidden with progress value equals to 0%.
+- *hide-on-complete:* if present, the directive will be hidden with progress value equals to 100% and no errors.
+- *type:* with `"bar"` value, will show a progress bar. With `indicator` value will show a progress badge with this format `{progress}%` (for example 35%). Default is `indicator`.
 
 ### Async Upload Preview Directive
 
@@ -159,6 +163,7 @@ This directive wraps the previous. `asyncUpload` saves the file and passes the r
 
 <async-upload-preview
   no-document-text="No file..."
+  progress-type="bar"
   upload-url="uploads"
   ng-model="user.fileUrl">
 </async-upload-preview>
@@ -189,6 +194,7 @@ In order to make this directive work, the `POST /uploads` response must be a jso
 
 - *no-document-text:* same as `no-document-text` on `docPreview` directive.
 - *render-image-as:* same as `render-image-as` on `docPreview` directive.
+- *progress-type:* same as `type` on `uploadProgress` directive.
 
 ## Use Case Example
 

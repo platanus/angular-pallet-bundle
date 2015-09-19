@@ -5,6 +5,7 @@ ngDescribe({
     '<async-upload-preview ' +
       'no-document-text="no file present"' +
       'upload-url="uploads"' +
+      'progress-type="bar"' +
       'ng-model="user.uploadIdentifier">' +
     '</async-upload>',
 
@@ -14,9 +15,8 @@ ngDescribe({
       expect(element.attr('class')).toMatch('async-upload');
     });
 
-    it('shows progress directive', function() {
-      var element = deps.element[0].querySelector('.upload-progress');
-      expect(element.textContent).toEqual('0%');
+    it('shows progress bar directive', function() {
+      expect(deps.element.html()).toMatch('inner-bar');
     });
 
     it('shows doc preview directive', function() {
@@ -86,7 +86,7 @@ ngDescribe({
 
     it('shows progress directive done', function() {
       var element = deps.element[0].querySelector('.upload-progress');
-      expect(element.textContent).toEqual('100%');
+      expect(element.textContent).toEqual('95%');
     });
 
     it('shows preview img icon based on file extension param', function() {
@@ -140,9 +140,17 @@ ngDescribe({
         status: 500,
       };
 
+      var progressResponse = {
+        loaded: 5000,
+        total: 5000
+      };
+
       var callback = {
         success: function() { return callback; },
-        progress: function() { return callback; },
+        progress: function(callbackProgress) {
+          callbackProgress(progressResponse);
+          return callback;
+        },
         error: function(callbackError){
           callbackError(errorResponse.error, errorResponse.status);
           return callback;
@@ -158,6 +166,11 @@ ngDescribe({
 
     it('cleans models upload idenfitier', function() {
       expect(deps.element.scope().user.uploadIdentifier).toEqual(null);
+    });
+
+    it('shows progress error class', function() {
+      var element = deps.element[0].querySelector('.upload-progress');
+      expect(element.classList).toMatch('error');
     });
 
     it('hides thumb', function() {
