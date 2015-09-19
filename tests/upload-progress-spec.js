@@ -84,10 +84,12 @@ ngDescribe({
   name: 'Angular-progress indicator hide on complete option',
   modules: 'platanus.upload',
   parentScope: { progressData: { loaded: 10000, total: 10000 } },
+  inject: ['$timeout'],
   element: '<upload-progress hide-on-complete="true" progress-data="progressData"></upload-progress>',
 
   tests: function (deps) {
     it('hides element hide option set', function () {
+      deps.$timeout.flush();
       expect(deps.element.hasClass('ng-hide')).toBe(true);
     });
   }

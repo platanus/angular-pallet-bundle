@@ -4,10 +4,10 @@ angular
   .module('platanus.upload')
   .directive('uploadProgress', uploadProgress);
 
-function uploadProgress() {
+function uploadProgress($timeout) {
   var directive = {
     template:
-      '<div ng-hide="shouldHide()" ' +
+      '<div ng-hide="!!hideProgress" ' +
         'ng-class="{ ' +
           '\'bar\': barType(), ' +
           '\'indicator\': !barType(), ' +
@@ -40,7 +40,6 @@ function uploadProgress() {
     _scope.isCompleted = isCompleted;
     _scope.hasErrors = hasErrors;
     _scope.barType = barType;
-    _scope.shouldHide = shouldHide;
 
     function getRawProgress() {
       return parseInt(100 * (_scope.progressData.loaded / _scope.progressData.total));
@@ -48,11 +47,11 @@ function uploadProgress() {
 
     function inProgress() {
       var progress = getRawProgress();
-      return (!_scope.progressData.error && (progress > 0 && progress < 100));
+      return (!hasErrors() && (progress > 0 && progress < 100));
     }
 
     function isCompleted() {
-      return (!_scope.progressData.error && getRawProgress() === 100);
+      return (!hasErrors() && getRawProgress() === 100);
     }
 
     function hasErrors() {
@@ -67,11 +66,24 @@ function uploadProgress() {
       return _scope.type === 'bar';
     }
 
-    function shouldHide() {
-      return ((getRawProgress() === 0 && _scope.hideOnZero) ||
-        (isCompleted() && _scope.hideOnComplete));
-    }
+    _scope.$watch('getRawProgress()', function(_progress) {
+      if(_progress === 0 && _scope.hideOnZero) {
+        _scope.hideProgress = true;
+        return;
+      }
+
+      if(isCompleted() && _scope.hideOnComplete) {
+        $timeout(function() {
+          _scope.hideProgress = true;
+        }, 1500);
+        return;
+      }
+
+      _scope.hideProgress = false;
+    });
   }
 }
+
+uploadProgress.$inject = ['$timeout'];
 
 })();
