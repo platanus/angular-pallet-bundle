@@ -23,6 +23,11 @@ ngDescribe({
       var element = deps.element.find('p');
       expect(element.text()).toMatch('no file present');
     });
+
+    it('hides remove button', function() {
+      var img = angular.element(deps.element[0].querySelectorAll('.remove-btn')[0]);
+      expect(img.hasClass('ng-hide')).toBe(true);
+    });
   }
 });
 
@@ -90,7 +95,7 @@ ngDescribe({
     });
 
     it('shows preview img icon based on file extension param', function() {
-      var img = deps.element.find('img');
+      var img = angular.element(deps.element[0].querySelectorAll('.image-preview')[0]);
       expect(img.prop('src')).toMatch(deps.encodedIcons.xls);
     });
 
@@ -102,6 +107,11 @@ ngDescribe({
     it('shows link with label based on file name param', function() {
       var link = deps.element.find('a');
       expect(link.text()).toMatch('Other name');
+    });
+
+    it('shows remove button', function() {
+      var img = angular.element(deps.element[0].querySelectorAll('.remove-btn')[0]);
+      expect(img.hasClass('ng-hide')).toBe(false);
     });
   }
 });
@@ -174,7 +184,7 @@ ngDescribe({
     });
 
     it('hides thumb', function() {
-      var img = deps.element.find('img');
+      var img = angular.element(deps.element[0].querySelectorAll('.image-preview')[0]);
       expect(img.prop('src')).toBe(undefined);
     });
   }

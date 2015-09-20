@@ -26,6 +26,7 @@ function asyncUploadPreview() {
           'progress-callback="setProgress(event)" ' +
           'success-callback="setUploadData(uploadData)" ' +
           'error-callback="setError(errorData)" ' +
+          'remove-callback="setInitialState()" ' +
           'ng-model="ngModel">' +
         '</async-upload>' +
         '<upload-progress type="{{progressType}}" ' +
