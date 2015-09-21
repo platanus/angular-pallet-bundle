@@ -57,6 +57,7 @@ This directive allows you to perform a `POST` to a given endpoint (`/uploads` on
   success-callback="successCallback(uploadData)"
   progress-callback="progressCallback(event)"
   error-callback="errorCallback(errorData)"
+  remove-callback="removeCallback()"
   ng-model="user.fileIdentifier">
 </async-upload>
 ```
@@ -86,6 +87,7 @@ In order to work the `POST /uploads` response must be a json with the following 
 - *success-callback:* to perform your own operations after a successful upload.
 - *progress-callback:* it gives you information about upload progress.
 - *error-callback:* to perform operations after a failed upload.
+- *remove-callback:* to perform operations after click on remove icon.
 
 ### Doc Preview Directive
 

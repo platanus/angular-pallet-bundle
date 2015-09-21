@@ -56,11 +56,10 @@ ngDescribe({
         });
 
         it('updates DOM using binding', function () {
-          var element = deps.element.find('div');
-
-          expect(element.attr('ngf-select') !== undefined).toBe(true);
-          expect(element.attr('ng-model') !== undefined).toBe(true);
-          expect(element.attr('ngf-change') !== undefined).toBe(true);
+          var buttonWrapper = angular.element(deps.element[0].querySelectorAll('.upload-btn')[0]);
+          expect(buttonWrapper.attr('ngf-select') !== undefined).toBe(true);
+          expect(buttonWrapper.attr('ng-model') !== undefined).toBe(true);
+          expect(buttonWrapper.attr('ngf-change') !== undefined).toBe(true);
         });
 
         it('change custom button label', function() {
@@ -89,6 +88,27 @@ ngDescribe({
           var scope = deps.element.scope();
           expect(scope.user.uploadIdentifier).toEqual('OjynOLMx2h');
         });
+
+        it('shows remove button', function() {
+          var element = deps.element.find('img');
+          expect(element.hasClass('ng-hide')).toBe(false);
+        });
+
+        describe('clicking on remove button', function() {
+          beforeEach(function() {
+            deps.element.isolateScope().onRemoveUpload();
+          });
+
+          it('cleans identifier', function() {
+            var scope = deps.element.scope();
+            expect(scope.user.uploadIdentifier).toEqual(null);
+          });
+
+          it('hides remove button', function() {
+            var element = deps.element.find('img');
+            expect(element.hasClass('ng-hide')).toBe(true);
+          });
+        });
       });
 
       describe('with error response', function() {
@@ -112,6 +132,11 @@ ngDescribe({
 
         it('calls defined error callback on parent scope with error data', function() {
           expect(deps.parentScope.setError).toHaveBeenCalledWith(errorResponse);
+        });
+
+        it('hides remove button', function() {
+          var element = deps.element.find('img');
+          expect(element.hasClass('ng-hide')).toBe(true);
         });
 
         it('calls defined error callback on parent scope with error data', function() {

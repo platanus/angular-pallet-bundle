@@ -4,11 +4,14 @@ angular
   .module('platanus.upload')
   .directive('asyncUpload', asyncUpload);
 
-function asyncUpload(Upload) {
+function asyncUpload(Upload, trashIcon) {
   var directive = {
     template:
-      '<div class="async-upload" ngf-change="upload($files)" ngf-select ng-model="files">' +
-        '<button>{{ getButtonLabel() }}</button>' +
+      '<div class="async-upload">' +
+        '<div class="upload-btn" ngf-change="upload($files)" ngf-select ng-model="files">' +
+          '<button>{{ getButtonLabel() }}</button>' +
+        '</div>' +
+        '<img class="remove-btn" ng-src="{{ trashIcon }}" ng-click="onRemoveUpload()" ng-hide="emptyIdentifier()" />' +
       '</div>',
     require: 'ngModel',
     scope: {
@@ -17,7 +20,8 @@ function asyncUpload(Upload) {
       startCallback: '&',
       successCallback: '&',
       progressCallback: '&',
-      errorCallback: '&'
+      errorCallback: '&',
+      removeCallback: '&'
     },
     link: link,
   };
@@ -27,6 +31,9 @@ function asyncUpload(Upload) {
   function link(_scope, _element, _attrs, _controller) {
     _scope.upload = upload;
     _scope.getButtonLabel = getButtonLabel;
+    _scope.trashIcon = trashIcon;
+    _scope.onRemoveUpload = onRemoveUpload;
+    _scope.emptyIdentifier = emptyIdentifier;
 
     function upload(files) {
       if (!files || !files.length) return;
@@ -63,9 +70,19 @@ function asyncUpload(Upload) {
     function getButtonLabel() {
       return (_scope.buttonLabel || 'Select file...');
     }
+
+    function onRemoveUpload() {
+      (_scope.removeCallback || angular.noop)();
+      _controller.$setViewValue(null);
+    }
+
+    function emptyIdentifier() {
+      return !_controller.$modelValue;
+    }
+
   }
 }
 
-asyncUpload.$inject = ['Upload'];
+asyncUpload.$inject = ['Upload', 'trashIcon'];
 
 })();
