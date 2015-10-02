@@ -59,7 +59,7 @@ function asyncUpload(Upload, trashIcon) {
         file: file
       };
 
-      (_scope.startCallback || angular.noop)();
+      (_scope.startCallback || angular.noop)({ file: { localFileName: file.name } });
 
       Upload.upload(params).success(function(data) {
         var successData = (data.upload || data),

@@ -24,11 +24,13 @@ function asyncUploadPreview() {
         '<async-upload ' +
           'upload-url="{{uploadUrl}}" ' +
           'multiple="{{multiple}}" ' +
-          'start-callback="onUploadStart()" ' +
+          'init-callback="onInit()" ' +
+          'done-callback="onDone()" ' +
+          'start-callback="onUploadStart(file)" ' +
           'progress-callback="onUploadProgress(event)" ' +
           'success-callback="onUploadSuccess(uploadData)" ' +
           'error-callback="onUploadError(errorData)" ' +
-          'remove-callback="onUploadStart()" ' +
+          'remove-callback="onUploadsRemove()" ' +
           'ng-model="ngModel">' +
         '</async-upload>' +
         '<div class="single-wrapper" ng-if="!multiple">' +
@@ -48,12 +50,20 @@ function asyncUploadPreview() {
         '</div>' +
         '<div class="multiple-wrapper" ng-if="!!multiple">' +
           '<div class="files-table" ng-repeat="file in mMode.files">' +
+            '<span ng-hide="file.canPreview()">{{file.documentName}}</span>' +
             '<doc-preview ' +
+              'ng-show="file.canPreview()" ' +
               'render-image-as="link" ' +
               'document-name="file.documentName" ' +
               'document-extension="{{file.fileExtension}}" ' +
               'document-url="file.downloadUrl">' +
             '</doc-preview>' +
+            '<upload-progress ' +
+              'type="{{progressType}}" ' +
+              'hide-on-complete="true" ' +
+              'hide-on-zero="true" ' +
+              'progress-data="file.progressData">' +
+            '</upload-progress>' +
           '</div>' +
         '</div>' +
       '<div>'
@@ -62,36 +72,90 @@ function asyncUploadPreview() {
   return directive;
 
   function link(_scope) {
+    _scope.onInit = onInit;
+    _scope.onDone = onDone;
     _scope.onUploadSuccess = onUploadSuccess;
     _scope.onUploadProgress = onUploadProgress;
     _scope.onUploadError = onUploadError;
     _scope.onUploadStart = onUploadStart;
+    _scope.onUploadsRemove = onUploadsRemove;
+
+    function DocFile(fileName, fileExtension, downloadUrl, identifier) {
+      this.documentName = fileName;
+      this.localFileName = fileName;
+      this.fileExtension = fileExtension || 'unknown';
+      this.downloadUrl = downloadUrl;
+      this.identifier = identifier;
+      this.progressData = { loaded: 0, total: 1, error: false };
+    }
+
+    DocFile.prototype = {
+      canPreview: function() {
+        return !!this.downloadUrl;
+      }
+    };
 
     _scope.mMode = {
       files: [],
 
-      setProgress: function(event) {
-      },
+      fileByLocalName: function(name) {
+        var file;
 
-      setError: function(errorData) {
+        for(var i = 0, len = _scope.mMode.files.length; i < len; i++) {
+          file = _scope.mMode.files[i];
+
+          if(file.localFileName === name) {
+            return file;
+          }
+        }
+
+        return null;
       },
 
       setInitialState: function() {
         _scope.mMode.files.length = 0;
       },
 
-      setUploadData: function(uploadData) {
-        var newFile = {};
+      setFinalState: function() {
+        // Do nothing
+      },
+
+      setProgress: function(event) {
+        if(event) {
+          var file = _scope.mMode.fileByLocalName(event.localFileName);
+          if(file) file.progressData = event;
+        }
+      },
+
+      setError: function(errorData) {
+        var file = _scope.mMode.fileByLocalName(errorData.localFileName);
+        if(file) file.progressData.error = true;
+      },
+
+      setFileInitialState: function(file) {
+        var newFile = new DocFile(file.localFileName);
+        console.info(newFile.documentName);
         _scope.mMode.files.push(newFile);
-        setUploadData(newFile, uploadData);
+      },
+
+      setUploadData: function(uploadData) {
+        var file = _scope.mMode.fileByLocalName(uploadData.localFileName);
+        if(file) setUploadData(file, uploadData);
       }
     };
 
     _scope.sMode = {
+      setInitialState: function() {
+        _scope.sMode.uploadData = {};
+        _scope.sMode.progressData = { loaded: 0, total: 1, error: false };
+      },
+
+      setFinalState: function() {
+        // Do nothing on single mode
+      },
+
       setProgress: function(event) {
-        if(event) {
-          _scope.sMode.progressData = event;
-        }
+        if(event)_scope.sMode.progressData = event;
       },
 
       setError: function(errorData) {
@@ -99,9 +163,8 @@ function asyncUploadPreview() {
         _scope.sMode.progressData.error = true;
       },
 
-      setInitialState: function() {
-        _scope.sMode.uploadData = {};
-        _scope.sMode.progressData = { loaded: 0, total: 1, error: false };
+      setFileInitialState: function(file) {
+        // Do nothing on single mode
       },
 
       setUploadData: function(uploadData) {
@@ -125,10 +188,13 @@ function asyncUploadPreview() {
       }
     }
 
+    function onInit() { mode.setInitialState(); }
+    function onUploadStart(file) { mode.setFileInitialState(file); }
     function onUploadProgress(event) { mode.setProgress(event); }
-    function onUploadError(errorData) { mode.setError(errorData); }
-    function onUploadStart() { mode.setInitialState(); }
     function onUploadSuccess(uploadData) { mode.setUploadData(uploadData); }
+    function onUploadError(errorData) { mode.setError(errorData); }
+    function onUploadsRemove() { mode.setInitialState(); }
+    function onDone() { mode.setFinalState(); }
   }
 }
 
