@@ -84,10 +84,12 @@ In order to work the `POST /uploads` response must be a json with the following 
 
 - *button-label:* you can pass this key as an HTML attribute to customize the upload button label. "Select File..." is the default value.
 - *multiple:* if present, the uploader will allow multiple file selection.
-- *start-callback:* to perform your own operations when upload process begins.
+- *init-callback:* to perform your own operations when upload process begins.
+- *start-callback:* to perform your own operations when upload process begins for each file to upload.
 - *success-callback:* to perform your own operations after a successful upload.
 - *progress-callback:* it gives you information about upload progress.
 - *error-callback:* to perform operations after a failed upload.
+- *done-callback:* to perform your own operations when all upload processes have finished.
 - *remove-callback:* to perform operations after click on remove icon.
 
 ### Doc Preview Directive

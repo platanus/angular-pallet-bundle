@@ -25,11 +25,13 @@ function asyncUpload(Upload, trashIcon) {
       uploadUrl: '@',
       buttonLabel: '@',
       multiple: '@',
+      initCallback: '&',
       startCallback: '&',
       successCallback: '&',
       progressCallback: '&',
       errorCallback: '&',
-      removeCallback: '&'
+      removeCallback: '&',
+      doneCallback: '&'
     },
     link: link,
   };
@@ -48,7 +50,7 @@ function asyncUpload(Upload, trashIcon) {
       var file = _remainginFiles.shift();
 
       if(!file) {
-        // TODO: call DONE callback
+        (_scope.doneCallback || angular.noop)();
         return;
       }
 
@@ -106,7 +108,7 @@ function asyncUpload(Upload, trashIcon) {
       }
 
       setIdentifier(null);
-      // TODO: call INIT callback
+      (_scope.initCallback || angular.noop)();
 
       uploadFile(files);
     }

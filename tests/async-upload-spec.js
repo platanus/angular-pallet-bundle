@@ -159,9 +159,11 @@ ngDescribe({
   element:
     '<async-upload ' +
       'multiple="true" ' +
+      'init-callback="onInit()" ' +
       'start-callback="onStart()" ' +
       'success-callback="setUploadData(uploadData)" ' +
       'error-callback="setError(errorData)" ' +
+      'done-callback="onDone()" ' +
       'upload-url="uploads" ' +
       'ng-model="user.uploadIdentifiers">' +
     '</async-upload>',
@@ -205,9 +207,11 @@ ngDescribe({
           };
 
           deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
+          deps.parentScope.onInit = jasmine.createSpy('onInit');
           deps.parentScope.setUploadData = jasmine.createSpy('setUploadData');
           deps.parentScope.onStart = jasmine.createSpy('onStart');
           deps.parentScope.setError = jasmine.createSpy('setError');
+          deps.parentScope.onDone = jasmine.createSpy('onDone');
           deps.element.isolateScope().upload(['file1.txt', 'file2.txt', 'fileError.txt']);
         });
 
@@ -216,6 +220,14 @@ ngDescribe({
           expect(deps.Upload.upload).toHaveBeenCalledWith({ url: 'uploads', file: 'file2.txt' });
           expect(deps.Upload.upload).toHaveBeenCalledWith({ url: 'uploads', file: 'fileError.txt' });
           expect(deps.Upload.upload.calls.count()).toEqual(3);
+        });
+
+        it('calls defined init callback on parent scope', function() {
+          expect(deps.parentScope.onInit.calls.count()).toEqual(1);
+        });
+
+        it('calls defined done callback on parent scope', function() {
+          expect(deps.parentScope.onDone.calls.count()).toEqual(1);
         });
 
         it('calls defined start callback on parent scope', function() {
