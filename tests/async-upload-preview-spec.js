@@ -46,34 +46,29 @@ ngDescribe({
 
   tests: function(deps, exposeApi) {
     beforeEach(function() {
-      var successfullyReponse = {
-        upload: {
-          'id': '84',
-          'identifier': 'OjynOLMx2h',
-          'file_extension': 'xls',
-          'file_name': 'Other name',
-          'download_url': 'http://uploads/84/download'
-        }
-      };
-
       exposeApi.setupElement(
         '<async-upload-preview ' +
           'upload-url="uploads"' +
           'ng-model="user.uploadIdentifier">' +
         '</async-upload>');
 
-      var successfullProgressReponse = {
-        loaded: 5000,
-        total: 5000
-      };
-
       var callback = {
         success: function(callbackSuccess) {
-          callbackSuccess(successfullyReponse);
+          var response = {
+            upload: {
+              'id': '84',
+              'identifier': 'OjynOLMx2h',
+              'file_extension': 'xls',
+              'file_name': 'Other name',
+              'download_url': 'http://uploads/84/download'
+            }
+          };
+
+          callbackSuccess(response);
           return callback;
         },
         progress: function(callbackProgress) {
-          callbackProgress(successfullProgressReponse);
+          callbackProgress({ loaded: 1, total: 1 });
           return callback;
         },
         error: function() { return callback; }
@@ -81,7 +76,7 @@ ngDescribe({
 
       deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
       var asyncDirective = deps.element.find('div');
-      asyncDirective.scope().upload(['my-file.txt']);
+      asyncDirective.scope().upload([{ name: 'my-file.txt' }]);
       deps.element.scope().$apply();
     });
 
@@ -145,31 +140,21 @@ ngDescribe({
         downloadUrl: 'http://uploads/84/download'
       };
 
-      var errorResponse = {
-        error: 'some error',
-        status: 500,
-      };
-
-      var progressResponse = {
-        loaded: 5000,
-        total: 5000
-      };
-
       var callback = {
         success: function() { return callback; },
         progress: function(callbackProgress) {
-          callbackProgress(progressResponse);
+          callbackProgress({ loaded: 1, total: 1 });
           return callback;
         },
         error: function(callbackError){
-          callbackError(errorResponse.error, errorResponse.status);
+          callbackError('some error', 500);
           return callback;
         }
       };
 
       deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
       var asyncDirective = deps.element.find('div');
-      asyncDirective.scope().upload(['my-file.txt']);
+      asyncDirective.scope().upload([{ name: 'my-file.txt' }]);
 
       deps.element.scope().$apply();
     });

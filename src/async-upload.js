@@ -62,23 +62,27 @@ function asyncUpload(Upload, trashIcon) {
       (_scope.startCallback || angular.noop)();
 
       Upload.upload(params).success(function(data) {
-        setIdentifier(data.upload.identifier);
-        (_scope.progressCallback || angular.noop)({ event: { loaded: 1, total: 1 } });
-        (_scope.successCallback || angular.noop)({ uploadData: data });
+        var successData = (data.upload || data),
+            progressData = { localFileName: file.name, loaded: 1, total: 1 };
+
+        setIdentifier(successData.identifier);
+        successData.localFileName = file.name;
+
+        (_scope.progressCallback || angular.noop)({ event: progressData });
+        (_scope.successCallback || angular.noop)({ uploadData: successData });
 
       }).progress(function(event){
-        var progressData = {
-          loaded: (event.loaded * 0.95),
-          total: event.total
-        };
-
+        var progressData = { localFileName: file.name, loaded: (event.loaded * 0.95), total: event.total };
         (_scope.progressCallback || angular.noop)({ event: progressData });
 
       }).error(function(data, status) {
-        var errorData = { error: data, status: status };
-        (_scope.progressCallback || angular.noop)({ event: { loaded: 1, total: 1 } });
-        (_scope.errorCallback || angular.noop)({ errorData: errorData });
+        var progressData = { localFileName: file.name, loaded: 1, total: 1 },
+            errorData = { localFileName: file.name, error: data, status: status };
+
         console.error(errorData);
+
+        (_scope.progressCallback || angular.noop)({ event: progressData });
+        (_scope.errorCallback || angular.noop)({ errorData: errorData });
       });
 
       uploadFile(_remainginFiles);

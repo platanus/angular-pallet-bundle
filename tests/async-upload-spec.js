@@ -14,23 +14,6 @@ ngDescribe({
     '</async-upload>',
 
   tests: function (deps) {
-    var successfullUploadReponse = {
-      upload: {
-        identifier: 'OjynOLMx2h',
-        id: '84'
-      }
-    };
-
-    var successfullProgressReponse = {
-      loaded: 1,
-      total: 1
-    };
-
-    var errorResponse = {
-      error: 'some error',
-      status: 500,
-    };
-
     describe('loading a file', function(){
       describe('with successful response', function() {
         beforeEach(function() {
@@ -38,11 +21,11 @@ ngDescribe({
           // success().progress().methodX()..
           var callback = {
             success: function(callbackSuccess) {
-              callbackSuccess(successfullUploadReponse);
+              callbackSuccess({ upload: { identifier: 'OjynOLMx2h', id: '84' } });
               return callback;
             },
             progress: function(callbackProgress){
-              callbackProgress(successfullProgressReponse);
+              callbackProgress({ loaded: 1, total: 1 });
               return callback;
             },
             error: function() { return callback; }
@@ -52,7 +35,7 @@ ngDescribe({
           deps.parentScope.setUploadData = jasmine.createSpy('setUploadData');
           deps.parentScope.setProgress = jasmine.createSpy('setProgress');
           deps.parentScope.onStart = jasmine.createSpy('onStart');
-          deps.element.isolateScope().upload(['my-file.txt']);
+          deps.element.isolateScope().upload([{ name: 'my-file.txt' }]);
         });
 
         it('updates DOM using binding', function () {
@@ -68,7 +51,7 @@ ngDescribe({
         });
 
         it('uploads a file with ngUploadFile service', function() {
-          var params = { url: 'uploads', file: 'my-file.txt' };
+          var params = { url: 'uploads', file: { name: 'my-file.txt' } };
           expect(deps.Upload.upload).toHaveBeenCalledWith(params);
           expect(deps.Upload.upload.calls.count()).toEqual(1);
         });
@@ -79,12 +62,14 @@ ngDescribe({
         });
 
         it('calls defined upload callback on parent scope with upload data', function() {
-          expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(successfullUploadReponse);
+          var response = { identifier: 'OjynOLMx2h', id: '84', localFileName: 'my-file.txt' };
+          expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(response);
           expect(deps.parentScope.setUploadData.calls.count()).toEqual(1);
         });
 
         it('calls defined progress callback on parent scope', function() {
-          expect(deps.parentScope.setProgress).toHaveBeenCalledWith(successfullProgressReponse);
+          var response = { loaded: 1, total: 1, localFileName: 'my-file.txt' }
+          expect(deps.parentScope.setProgress).toHaveBeenCalledWith(response);
         });
 
         it('sets upload identifier from response', function() {
@@ -120,7 +105,7 @@ ngDescribe({
             success: function() { return callback; },
             progress: function() { return callback; },
             error: function(callbackError){
-              callbackError(errorResponse.error, errorResponse.status);
+              callbackError('some error', 500);
               return callback;
             }
           };
@@ -130,11 +115,12 @@ ngDescribe({
 
           deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
           deps.parentScope.setError = jasmine.createSpy('setError');
-          deps.element.isolateScope().upload(['my-file.txt']);
+          deps.element.isolateScope().upload([{ name: 'my-file.txt' }]);
         });
 
         it('calls defined error callback on parent scope with error data', function() {
-          expect(deps.parentScope.setError).toHaveBeenCalledWith(errorResponse);
+          var response = { error: 'some error', status: 500, localFileName: 'my-file.txt' };
+          expect(deps.parentScope.setError).toHaveBeenCalledWith(response);
           expect(deps.parentScope.setError.calls.count()).toEqual(1);
         });
 
@@ -169,11 +155,6 @@ ngDescribe({
     '</async-upload>',
 
   tests: function (deps) {
-    var errorResponse = {
-      error: 'some error',
-      status: 500,
-    };
-
     describe('loading multiple files', function(){
       describe('with successful response', function() {
         beforeEach(function() {
@@ -199,7 +180,7 @@ ngDescribe({
             progress: function() { return callback; },
             error: function(callbackError){
               if(uploadsCount >= 3) { // want to fire error callback uploading the third file
-                callbackError(errorResponse.error, errorResponse.status);
+                callbackError('some error', 500);
               }
 
               return callback;
@@ -212,13 +193,13 @@ ngDescribe({
           deps.parentScope.onStart = jasmine.createSpy('onStart');
           deps.parentScope.setError = jasmine.createSpy('setError');
           deps.parentScope.onDone = jasmine.createSpy('onDone');
-          deps.element.isolateScope().upload(['file1.txt', 'file2.txt', 'fileError.txt']);
+          deps.element.isolateScope().upload([{ name: 'file1.txt' }, { name: 'file2.txt' }, { name: 'fileError.txt' }]);
         });
 
         it('uploads multiple fules with ngUploadFile service', function() {
-          expect(deps.Upload.upload).toHaveBeenCalledWith({ url: 'uploads', file: 'file1.txt' });
-          expect(deps.Upload.upload).toHaveBeenCalledWith({ url: 'uploads', file: 'file2.txt' });
-          expect(deps.Upload.upload).toHaveBeenCalledWith({ url: 'uploads', file: 'fileError.txt' });
+          expect(deps.Upload.upload).toHaveBeenCalledWith({ url: 'uploads', file: { name: 'file1.txt' } });
+          expect(deps.Upload.upload).toHaveBeenCalledWith({ url: 'uploads', file: { name: 'file2.txt' } });
+          expect(deps.Upload.upload).toHaveBeenCalledWith({ url: 'uploads', file: { name: 'fileError.txt' } });
           expect(deps.Upload.upload.calls.count()).toEqual(3);
         });
 
@@ -236,17 +217,15 @@ ngDescribe({
 
         it('calls defined upload callback on parent scope with upload data', function() {
           var response1 = {
-            upload: {
-              identifier: 'identifier1',
-              id: 1
-            }
+            identifier: 'identifier1',
+            id: 1,
+            localFileName: 'file1.txt'
           };
 
           var response2 = {
-            upload: {
-              identifier: 'identifier2',
-              id: 2
-            }
+            identifier: 'identifier2',
+            id: 2,
+            localFileName: 'file2.txt'
           };
 
           expect(deps.parentScope.setUploadData).toHaveBeenCalledWith(response1);
@@ -260,7 +239,8 @@ ngDescribe({
         });
 
         it('calls defined error callback on parent scope with error data', function() {
-          expect(deps.parentScope.setError).toHaveBeenCalledWith(errorResponse);
+          var response = { error: 'some error', status: 500, localFileName: 'fileError.txt' };
+          expect(deps.parentScope.setError).toHaveBeenCalledWith(response);
           expect(deps.parentScope.setError.calls.count()).toEqual(1);
         });
       });
