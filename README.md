@@ -77,12 +77,13 @@ In order to work the `POST /uploads` response must be a json with the following 
 
 ##### Mandatory
 
-- *ng-model:* to keep the identifier of the uploaded file.
+- *ng-model:* to keep the identifier(s) of the uploaded file. If *multiple* attribute is enabled, the model will have a value like this: `["EJ6pOl5Y", "ZN5BaK3j"]` otherwise `"EJ6pOl5Y"`
 - *upload-url:* must contain the url to perform the `POST` to save files.
 
 ##### Optional
 
 - *button-label:* you can pass this key as an HTML attribute to customize the upload button label. "Select File..." is the default value.
+- *multiple:* if present, the uploader will allow multiple file selection.
 - *start-callback:* to perform your own operations when upload process begins.
 - *success-callback:* to perform your own operations after a successful upload.
 - *progress-callback:* it gives you information about upload progress.
