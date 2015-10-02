@@ -33,21 +33,21 @@ function asyncUploadPreview() {
           'remove-callback="onUploadsRemove()" ' +
           'ng-model="ngModel">' +
         '</async-upload>' +
-        '<div class="single-wrapper" ng-if="!multiple">' +
-          '<upload-progress ' +
-            'type="{{progressType}}" ' +
-            'hide-on-complete="true" ' +
-            'hide-on-zero="true" ' +
-            'progress-data="sMode.progressData">' +
-          '</upload-progress>' +
-          '<doc-preview ' +
-            'no-document-text="{{noDocumentText}}" ' +
-            'render-image-as="{{renderImageAs}}" ' +
-            'document-name="sMode.uploadData.documentName" ' +
-            'document-extension="{{sMode.uploadData.fileExtension}}" ' +
-            'document-url="sMode.uploadData.downloadUrl">' +
-          '</doc-preview>' +
-        '</div>' +
+        '<upload-progress ' +
+          'ng-if="!multiple" ' +
+          'type="{{progressType}}" ' +
+          'hide-on-complete="true" ' +
+          'hide-on-zero="true" ' +
+          'progress-data="sMode.file.progressData">' +
+        '</upload-progress>' +
+        '<doc-preview ' +
+          'ng-if="!multiple" ' +
+          'no-document-text="{{noDocumentText}}" ' +
+          'render-image-as="{{renderImageAs}}" ' +
+          'document-name="sMode.file.documentName" ' +
+          'document-extension="{{sMode.file.fileExtension}}" ' +
+          'document-url="sMode.file.downloadUrl">' +
+        '</doc-preview>' +
         '<div class="multiple-wrapper" ng-if="!!multiple">' +
           '<div class="files-table" ng-repeat="file in mMode.files">' +
             '<span ng-hide="file.canPreview()">{{file.documentName}}</span>' +
@@ -92,6 +92,20 @@ function asyncUploadPreview() {
     DocFile.prototype = {
       canPreview: function() {
         return !!this.downloadUrl;
+      },
+
+      setUploadData: function(uploadData) {
+        var data = (uploadData.upload || uploadData);
+
+        this.identifier = data.identifier;
+        this.documentName =(data.file_name || data.fileName);
+        this.fileExtension = (data.file_extension || data.fileExtension);
+        this.downloadUrl = (data.download_url || data.downloadUrl);
+
+        if(!this.identifier || !this.documentName ||
+          !this.fileExtension || !this.downloadUrl) {
+          throw 'Invalid response. Must be a json with identifier, file_name, file_extension and download_url';
+        }
       }
     };
 
@@ -134,20 +148,18 @@ function asyncUploadPreview() {
 
       setFileInitialState: function(file) {
         var newFile = new DocFile(file.localFileName);
-        console.info(newFile.documentName);
         _scope.mMode.files.push(newFile);
       },
 
       setUploadData: function(uploadData) {
         var file = _scope.mMode.fileByLocalName(uploadData.localFileName);
-        if(file) setUploadData(file, uploadData);
+        if(file) file.setUploadData(uploadData);
       }
     };
 
     _scope.sMode = {
       setInitialState: function() {
-        _scope.sMode.uploadData = {};
-        _scope.sMode.progressData = { loaded: 0, total: 1, error: false };
+        _scope.sMode.file = new DocFile();
       },
 
       setFinalState: function() {
@@ -155,12 +167,11 @@ function asyncUploadPreview() {
       },
 
       setProgress: function(event) {
-        if(event)_scope.sMode.progressData = event;
+        if(event) _scope.sMode.file.progressData = event;
       },
 
       setError: function(errorData) {
-        _scope.sMode.uploadData = {};
-        _scope.sMode.progressData.error = true;
+        _scope.sMode.file.progressData.error = true;
       },
 
       setFileInitialState: function(file) {
@@ -168,25 +179,11 @@ function asyncUploadPreview() {
       },
 
       setUploadData: function(uploadData) {
-        setUploadData(_scope.sMode.uploadData, uploadData);
+        _scope.sMode.file.setUploadData(uploadData);
       }
     };
 
     var mode = !!_scope.multiple ? _scope.mMode : _scope.sMode;
-
-    function setUploadData(holder, uploadData) {
-      var data = (uploadData.upload || uploadData);
-
-      holder.identifier = data.identifier;
-      holder.documentName =(data.file_name || data.fileName);
-      holder.fileExtension = (data.file_extension || data.fileExtension);
-      holder.downloadUrl = (data.download_url || data.downloadUrl);
-
-      if(!holder.identifier || !holder.documentName ||
-        !holder.fileExtension || !holder.downloadUrl) {
-        throw 'Invalid response. Must be a json with identifier, file_name, file_extension and download_url';
-      }
-    }
 
     function onInit() { mode.setInitialState(); }
     function onUploadStart(file) { mode.setFileInitialState(file); }
