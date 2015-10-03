@@ -68,7 +68,7 @@ ngDescribe({
         });
 
         it('calls defined progress callback on parent scope', function() {
-          var response = { loaded: 1, total: 1, localFileName: 'my-file.txt' }
+          var response = { loaded: 1, total: 1, localFileName: 'my-file.txt' };
           expect(deps.parentScope.setProgress).toHaveBeenCalledWith(response);
         });
 

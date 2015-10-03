@@ -19,6 +19,9 @@
     .pre-preview {
       span {
         @include inline-text();
+        &:before {
+          content: '\00a0\00a0\2023\00a0\00a0\00a0';
+        }
       }
     }
 

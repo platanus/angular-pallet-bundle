@@ -50,7 +50,10 @@ function asyncUploadPreview() {
         '</doc-preview>' +
         '<div class="files-table" ng-if="!!multiple">' +
           '<div class="files-row" ng-repeat="file in mMode.files">' +
-            '<div class="pre-preview" ng-hide="file.canPreview()"><span>{{file.documentName}}</span></div>' +
+            '<div class="pre-preview"' +
+              'ng-hide="file.canPreview()">' +
+              '<span>{{file.documentName}}</span>' +
+            '</div>' +
             '<doc-preview ' +
               'ng-show="file.canPreview()" ' +
               'render-image-as="link" ' +
