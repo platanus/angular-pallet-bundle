@@ -18,7 +18,7 @@ function asyncUpload(Upload, trashIcon) {
         '<img class="remove-btn" ' +
           'ng-src="{{ trashIcon }}" ' +
           'ng-click="onRemoveUpload()" ' +
-          'ng-hide="emptyIdentifier()" />' +
+          'ng-hide="emptyIdentifier() || isLoading()" />' +
       '</div>',
     require: 'ngModel',
     scope: {
@@ -39,18 +39,41 @@ function asyncUpload(Upload, trashIcon) {
   return directive;
 
   function link(_scope, _element, _attrs, _controller) {
+    var NO_PROCESSING = -1,
+        ALL_FILES_PROCESSED = 0;
+
+    _scope.processedFilesCount = NO_PROCESSING;
     _scope.multiple = false;
     _scope.upload = upload;
     _scope.getButtonLabel = getButtonLabel;
     _scope.trashIcon = trashIcon;
     _scope.onRemoveUpload = onRemoveUpload;
     _scope.emptyIdentifier = emptyIdentifier;
+    _scope.isLoading = isLoading;
+
+    _scope.$watch('processedFilesCount', function(_count) {
+      if(_count === ALL_FILES_PROCESSED) {
+        _scope.processedFilesCount = NO_PROCESSING;
+        (_scope.doneCallback || angular.noop)();
+      }
+    });
+
+    _scope.safeApply = function(fn) {
+      var phase = this.$root.$$phase;
+
+      if(phase === '$apply' || phase === '$digest') {
+        if(fn && (typeof(fn) === 'function')) {
+          fn();
+        }
+      } else {
+        this.$apply(fn);
+      }
+    };
 
     function uploadFile(_remainginFiles) {
       var file = _remainginFiles.shift();
 
       if(!file) {
-        (_scope.doneCallback || angular.noop)();
         return;
       }
 
@@ -67,6 +90,7 @@ function asyncUpload(Upload, trashIcon) {
 
         setIdentifier(successData.identifier);
         successData.localFileName = file.name;
+        _scope.processedFilesCount--;
 
         (_scope.progressCallback || angular.noop)({ event: progressData });
         (_scope.successCallback || angular.noop)({ uploadData: successData });
@@ -80,6 +104,7 @@ function asyncUpload(Upload, trashIcon) {
             errorData = { localFileName: file.name, error: data, status: status };
 
         console.error(errorData);
+        _scope.processedFilesCount--;
 
         (_scope.progressCallback || angular.noop)({ event: progressData });
         (_scope.errorCallback || angular.noop)({ errorData: errorData });
@@ -105,16 +130,19 @@ function asyncUpload(Upload, trashIcon) {
     }
 
     function upload(files) {
-      if (!files || !files.length) return;
+      _scope.safeApply(function() {
+        if (!files || !files.length) return;
 
-      if(!_scope.multiple) {
-        files = [files[0]];
-      }
+        if(!_scope.multiple) {
+          files = [files[0]];
+        }
 
-      setIdentifier(null);
-      (_scope.initCallback || angular.noop)();
+        setIdentifier(null);
+        _scope.processedFilesCount = files.length;
+        (_scope.initCallback || angular.noop)();
 
-      uploadFile(files);
+        uploadFile(files);
+      });
     }
 
     function getButtonLabel() {
@@ -128,6 +156,10 @@ function asyncUpload(Upload, trashIcon) {
 
     function emptyIdentifier() {
       return !_controller.$viewValue;
+    }
+
+    function isLoading() {
+      return _scope.processedFilesCount > ALL_FILES_PROCESSED;
     }
   }
 }
