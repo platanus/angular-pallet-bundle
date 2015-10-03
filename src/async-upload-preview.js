@@ -48,9 +48,9 @@ function asyncUploadPreview() {
           'document-extension="{{sMode.file.fileExtension}}" ' +
           'document-url="sMode.file.downloadUrl">' +
         '</doc-preview>' +
-        '<div class="multiple-wrapper" ng-if="!!multiple">' +
-          '<div class="files-table" ng-repeat="file in mMode.files">' +
-            '<span ng-hide="file.canPreview()">{{file.documentName}}</span>' +
+        '<div class="files-table" ng-if="!!multiple">' +
+          '<div class="files-row" ng-repeat="file in mMode.files">' +
+            '<div class="pre-preview" ng-hide="file.canPreview()"><span>{{file.documentName}}</span></div>' +
             '<doc-preview ' +
               'ng-show="file.canPreview()" ' +
               'render-image-as="link" ' +
@@ -58,12 +58,12 @@ function asyncUploadPreview() {
               'document-extension="{{file.fileExtension}}" ' +
               'document-url="file.downloadUrl">' +
             '</doc-preview>' +
-            '<upload-progress ' +
-              'type="{{progressType}}" ' +
-              'hide-on-complete="true" ' +
-              'hide-on-zero="true" ' +
-              'progress-data="file.progressData">' +
-            '</upload-progress>' +
+            '<div class="file-status">' +
+              '<upload-progress ' +
+                'type="indicator" ' +
+                'progress-data="file.progressData">' +
+              '</upload-progress>' +
+            '</div>' +
           '</div>' +
         '</div>' +
       '<div>'
