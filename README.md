@@ -53,7 +53,7 @@ This directive allows you to perform a `POST` to a given endpoint (`/uploads` on
 
 <async-upload
   upload-url="api/uploads"
-  start-callback="startCallback()"
+  start-callback="startCallback(file)"
   success-callback="successCallback(uploadData)"
   progress-callback="progressCallback(event)"
   error-callback="errorCallback(errorData)"
@@ -77,7 +77,7 @@ In order to work the `POST /uploads` response must be a json with the following 
 
 ##### Mandatory
 
-- *ng-model:* to keep the identifier(s) of the uploaded file. If *multiple* attribute is enabled, the model will have a value like this: `["EJ6pOl5Y", "ZN5BaK3j"]` otherwise `"EJ6pOl5Y"`
+- *ng-model:* to keep the identifier(s) of the uploaded file. If *multiple* attribute is "true", the model will have a value like this: `["EJ6pOl5Y", "ZN5BaK3j"]` otherwise `"EJ6pOl5Y"`
 - *upload-url:* must contain the url to perform the `POST` to save files.
 
 ##### Optional
@@ -200,6 +200,7 @@ In order to make this directive work, the `POST /uploads` response must be a jso
 - *no-document-text:* same as `no-document-text` on `docPreview` directive.
 - *render-image-as:* same as `render-image-as` on `docPreview` directive.
 - *progress-type:* same as `type` on `uploadProgress` directive.
+- *multiple:* if present, multiple upload functionality will be enabled.
 
 ## Use Case Example
 
