@@ -28,6 +28,11 @@ ngDescribe({
       var img = angular.element(deps.element[0].querySelectorAll('.remove-btn')[0]);
       expect(img.hasClass('ng-hide')).toBe(true);
     });
+
+    it('hides files table with single upload', function() {
+      var table = angular.element(deps.element[0].querySelectorAll('.files-table'));
+      expect(table.length).toBe(0);
+    });
   }
 });
 
@@ -108,6 +113,11 @@ ngDescribe({
       var img = angular.element(deps.element[0].querySelectorAll('.remove-btn')[0]);
       expect(img.hasClass('ng-hide')).toBe(false);
     });
+
+    it('hides files table with single upload', function() {
+      var table = angular.element(deps.element[0].querySelectorAll('.files-table'));
+      expect(table.length).toBe(0);
+    });
   }
 });
 
@@ -171,6 +181,117 @@ ngDescribe({
     it('hides thumb', function() {
       var img = angular.element(deps.element[0].querySelectorAll('.image-preview')[0]);
       expect(img.prop('src')).toBe(undefined);
+    });
+  }
+});
+
+ngDescribe({
+  name: 'Async upload preview working with multiple files',
+  modules: 'platanus.upload',
+  exposeApi: true,
+  inject: ['Upload', 'encodedIcons'],
+
+  tests: function(deps, exposeApi) {
+    var result;
+
+    beforeEach(function() {
+      exposeApi.setupElement(
+        '<async-upload-preview ' +
+          'upload-url="uploads"' +
+          'multiple="true"' +
+          'progress-type="bar"' +
+          'render-image-as="thumb"' +
+          'ng-model="user.uploadIdentifiers">' +
+        '</async-upload>');
+
+      var uploadsCount = 0;
+      var callback = {
+        success: function(callbackSuccess) {
+          uploadsCount++;
+
+          if(uploadsCount < 3) {
+            var successfullUploadReponse = {
+              upload: {
+                'identifier': 'identifier' + uploadsCount,
+                'id': uploadsCount,
+                'file_name': 'file' + uploadsCount + '.xls',
+                'file_extension': 'xls',
+                'download_url': 'http://uploads/' + uploadsCount + '/download'
+              }
+            };
+
+            callbackSuccess(successfullUploadReponse);
+          }
+
+          return callback;
+        },
+        progress: function() { return callback; },
+        error: function(callbackError){
+          if(uploadsCount >= 3) { // want to fire error callback uploading the third file
+            callbackError('Error loading file 3', 500);
+          }
+
+          return callback;
+        }
+      };
+
+      deps.Upload.upload = jasmine.createSpy('upload').and.returnValue(callback);
+      var asyncDirective = deps.element.find('div');
+      asyncDirective.scope().upload([{ name: 'file1.xls' }, { name: 'file2.xls' }, { name: 'file3.xls' }]);
+      deps.element.scope().$apply();
+
+      function getRowElement(_idx, _elementClass) {
+        var rows = angular.element(deps.element[0].querySelectorAll('.files-row'));
+        return angular.element(rows[_idx].querySelectorAll(_elementClass)[0]);
+      }
+
+      result = {};
+
+      for(var i = 0; i < 3; i++) {
+        result['file' + i] = {
+          prePreview: getRowElement(i, '.pre-preview'),
+          docPreview: getRowElement(i, '.doc-preview'),
+          progressBar: getRowElement(i, '.upload-progress')
+        };
+      }
+    });
+
+    it('sets upload idenfitier to model', function() {
+      expect(deps.element.scope().user.uploadIdentifiers).toEqual(['identifier1', 'identifier2']);
+    });
+
+    it('shows files table', function() {
+      var rows = angular.element(deps.element[0].querySelectorAll('.files-table'));
+      expect(rows.children().length).toEqual(3);
+    });
+
+    it('shows pre preview for file with errors only', function() {
+      expect(result.file0.prePreview.hasClass('ng-hide')).toBe(true);
+      expect(result.file1.prePreview.hasClass('ng-hide')).toBe(true);
+      expect(result.file2.prePreview.hasClass('ng-hide')).toBe(false);
+    });
+
+    it('shows doc preview for completed uploads only', function() {
+      expect(result.file0.docPreview.hasClass('ng-hide')).toBe(false);
+      expect(result.file1.docPreview.hasClass('ng-hide')).toBe(false);
+      expect(result.file2.docPreview.hasClass('ng-hide')).toBe(true);
+    });
+
+    it('shows completed progress for successful uploads only', function() {
+      expect(result.file0.progressBar.hasClass('completed')).toBe(true);
+      expect(result.file1.progressBar.hasClass('completed')).toBe(true);
+      expect(result.file2.progressBar.hasClass('error')).toBe(true);
+    });
+
+    it('shows progress bar always as indicator', function() {
+      expect(result.file0.progressBar.hasClass('indicator')).toBe(true);
+      expect(result.file1.progressBar.hasClass('indicator')).toBe(true);
+      expect(result.file2.progressBar.hasClass('indicator')).toBe(true);
+    });
+
+    it('shows remove button', function() {
+      var img = angular.element(deps.element[0].querySelectorAll('.remove-btn')[0]);
+      expect(img.hasClass('ng-hide')).toBe(false);
     });
   }
 });
