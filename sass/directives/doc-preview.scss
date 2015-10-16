@@ -5,19 +5,15 @@
 
   .image-preview {
     max-height: 150px;
-    border: solid 1px #999;
+    border: solid 1px $primary;
     padding: 5px;
 
     &.icon {
-      float: left;
       width: 24px;
       height: 24px;
       padding: 0 5px 0 0;
       border: none;
+      vertical-align: middle;
     }
-  }
-
-  .doc-link {
-    vertical-align: middle;
   }
 }

@@ -1,0 +1,47 @@
+.files-table {
+  margin: 10px 0 10px 0;
+
+  .files-row {
+    width: 100%;
+    white-space: nowrap;
+    padding: 5px;
+
+    .doc-preview, .pre-preview, .file-status {
+      display: inline-block;
+      margin: 0;
+    }
+
+    .doc-preview, .pre-preview {
+      text-align: left;
+      width: 65%;
+    }
+
+    .pre-preview {
+      span {
+        @include inline-text();
+        &:before {
+          content: '\00a0\00a0\2023\00a0\00a0\00a0';
+        }
+      }
+    }
+
+    .doc-preview {
+      .doc-link {
+        @include inline-text();
+      }
+    }
+
+    .file-status {
+      text-align: right;
+      width: 35%;
+    }
+
+    &:nth-child(odd) {
+      background-color: $primary;
+    }
+
+    &:nth-child(even) {
+      background-color: $secondary;
+    }
+  }
+}

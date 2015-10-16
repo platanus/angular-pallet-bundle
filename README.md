@@ -53,7 +53,7 @@ This directive allows you to perform a `POST` to a given endpoint (`/uploads` on
 
 <async-upload
   upload-url="api/uploads"
-  start-callback="startCallback()"
+  start-callback="startCallback(file)"
   success-callback="successCallback(uploadData)"
   progress-callback="progressCallback(event)"
   error-callback="errorCallback(errorData)"
@@ -77,16 +77,19 @@ In order to work the `POST /uploads` response must be a json with the following 
 
 ##### Mandatory
 
-- *ng-model:* to keep the identifier of the uploaded file.
+- *ng-model:* to keep the identifier(s) of the uploaded file. If *multiple* attribute is "true", the model will have a value like this: `["EJ6pOl5Y", "ZN5BaK3j"]` otherwise `"EJ6pOl5Y"`
 - *upload-url:* must contain the url to perform the `POST` to save files.
 
 ##### Optional
 
 - *button-label:* you can pass this key as an HTML attribute to customize the upload button label. "Select File..." is the default value.
-- *start-callback:* to perform your own operations when upload process begins.
+- *multiple:* if present, the uploader will allow multiple file selection.
+- *init-callback:* to perform your own operations when upload process begins.
+- *start-callback:* to perform your own operations when upload process begins for each file to upload.
 - *success-callback:* to perform your own operations after a successful upload.
 - *progress-callback:* it gives you information about upload progress.
 - *error-callback:* to perform operations after a failed upload.
+- *done-callback:* to perform your own operations when all upload processes have finished.
 - *remove-callback:* to perform operations after click on remove icon.
 
 ### Doc Preview Directive
@@ -197,6 +200,7 @@ In order to make this directive work, the `POST /uploads` response must be a jso
 - *no-document-text:* same as `no-document-text` on `docPreview` directive.
 - *render-image-as:* same as `render-image-as` on `docPreview` directive.
 - *progress-type:* same as `type` on `uploadProgress` directive.
+- *multiple:* if present, multiple upload functionality will be enabled.
 
 ## Use Case Example
 
