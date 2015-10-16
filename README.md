@@ -1,14 +1,12 @@
-# Angular Upload
+# Ng-File-Upload-Wrapper
 
-It's a library with a set of directives created to play with [Paperclip Upload](https://github.com/platanus/paperclip_upload) gem.
-
-> It's not mandatory to use Rails and Paperclip Upload. You can always mimic the server functionality.
+As it name implies, this is a library built on top of the excelent [Ng-File-Upload](https://github.com/danialfarid/ng-file-upload) that pretends to facilitate it's most common uses and give you an easy way to handle multiple uploads linking them together on a single resource back in the server. Even though it plays along very well with [Paperclip Upload](https://github.com/platanus/paperclip_upload) gem, it's not mandatory to use RoR or Paperclip Upload. You can always mimic the server functionality.
 
 ## Installation
 
 ```bash
 bower install ng-file-upload --save
-bower install https://github.com/platanus/angular-upload --save
+bower install https://github.com/platanus/ng-file-upload-wrapper --save
 ```
 
 Include the JS files in your project and the library as an Angular Dependency
@@ -23,11 +21,14 @@ angular.module('yourapp', ['platanus.upload']);
 ## Usage
 
 To make it simple, I'm going to give a use case example...
-Suppose you have a `User` model. This model has two attributes: `avatar` (user photo) and `file (a document or spreadsheet). Now suppose, from your application, you want to:
 
-1. Upload the user's avatar. See a preview (a thumbnail maybe), be sure the upload was successful.
-2. Upload the user's file. See a preview (a link), be sure the upload was successful.
-3. Save the user data.
+Suppose you have a `User` model. This model has two attributes: `avatar` (user photo) and `file (a document or spreadsheet). 
+
+If you send all the data at once, you will have a rather large payload, and if it fails, all you will have is an angry user. So, from your application, you want to let the user:
+
+1. Upload the avatar. See a preview (a thumbnail maybe), be sure the upload was successful.
+2. Upload the  file. See a preview (a link), be sure the upload was successful.
+3. Submit the form and link all the user data on the server.
 
 In short, you want to make different requests to upload avatar and file attributes and then save the user with all the data in a lighter request.
 
@@ -36,11 +37,11 @@ In short, you want to make different requests to upload avatar and file attribut
 - You can have feedback after each file is saved.
 - You can send to the server all the files you want. The final request (when you save the user), will have references to saved resources not the files themselves, making the request lighter.
 
-So, to achieve this, we can use a few directives I will show next:
+So, to achieve this, we can use a few directives I will show next (or you can skip right to the [example](#use-case-example)):
 
 ### Async Upload Directive
 
-This directive allows you to perform a `POST` to a given endpoint (`/uploads` on this example) with a file. The url, must return a file identifier. This identifier (that represents the uploaded file), will be stored inside an attribute (`user.avatarIdentifier` or `user.fileIdentifier`) passed to the `ng-model`.
+This directive allows you to perform a `POST` to a given endpoint (`/uploads` on this example) with a file. The url must return a file identifier. This identifier (that represents the uploaded file), will be stored inside an attribute (`user.avatarIdentifier` or `user.fileIdentifier`) passed to the `ng-model`.
 
 #### Example
 
@@ -62,12 +63,12 @@ This directive allows you to perform a `POST` to a given endpoint (`/uploads` on
 </async-upload>
 ```
 
-In order to work the `POST /uploads` response must be a json with the following format:
+In order for it to work, the `POST /uploads` response must be a json with the following format:
 
 ```json
 {
   "upload": {
-    "identifier": "some hash",
+    "identifier": "S0MeH4Sh",
   }
 }
 ```
@@ -95,7 +96,7 @@ In order to work the `POST /uploads` response must be a json with the following 
 ### Doc Preview Directive
 
 This directive allows you to show a file preview from a given url.
-By default, will try to infer the file type from the url. For example, if `user.fileUrl` has the value: `http://server.platan.us/files/my-file.xls?1435170296`, the directive will notice the url represents an Excel file and will show a link with an "Excel icon". If, for example, `user.fileUrl` contains `http://server.platan.us/files/my-smiley-face.png` then, by default, will show a thumbnail with a link.
+By default, it will try to infer the file type from the url. For example, if `user.fileUrl` has the value: `http://server.platan.us/files/my-file.xls?1435170296`, the directive will notice the url represents an Excel file and will show a link with an **"Excel icon"**. If, for example, `user.fileUrl` contains `http://server.platan.us/files/my-smiley-face.png` then, by default, will show a **thumbnail** with a link.
 
 #### Example
 
@@ -116,7 +117,7 @@ By default, will try to infer the file type from the url. For example, if `user.
 
 ##### Mandatory
 
-- *document-url:* the url containing the image to show.
+- *document-url:* the url containing the document to show.
 
 ##### Optional
 
@@ -127,7 +128,7 @@ By default, will try to infer the file type from the url. For example, if `user.
 
 ### Upload Progress
 
-Directive to show the upload progress as percentage value.
+This directive will show the upload progress as percentage value.
 
 #### Example
 
@@ -152,7 +153,7 @@ Directive to show the upload progress as percentage value.
 - *hide-on-complete:* if present, the directive will be hidden with progress value equals to 100% and no errors.
 - *type:* with `"bar"` value, will show a progress bar. With `indicator` value will show a progress badge with this format `{progress}%` (for example 35%). Default is `indicator`.
 
-### Async Upload Preview Directive
+### Bundled Async Upload Preview Directive
 
 This directive wraps the previous. `asyncUpload` saves the file and passes the response to `docPreview` to show a preview of the loaded file.
 
@@ -204,7 +205,7 @@ In order to make this directive work, the `POST /uploads` response must be a jso
 
 ## Use Case Example
 
-So, to satisfy the use case, We can have a form like this:
+So, to satisfy the use case mentioned above, we can setup a form like this:
 
 ```html
 <form method="post" action="/users">
