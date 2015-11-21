@@ -14,6 +14,11 @@ var gulp = require('gulp'),
 
 var paths = {
   src: ['./src/index.js','./src/*.js'],
+  dependenciesSrc: [
+    './bower_components/angular-async-upload/dist/angular-async-upload.js',
+    './bower_components/angular-doc-preview/dist/angular-doc-preview.js',
+    './bower_components/angular-progress/dist/angular-progress.js'
+  ],
   dist: ['./dist/*.js']
 };
 
@@ -26,7 +31,7 @@ gulp.task('lint', function() {
 });
 
 gulp.task('build', ['lint', 'sass'], function() {
-  return gulp.src(paths.src)
+  return gulp.src(paths.dependenciesSrc.concat(paths.src))
     .pipe(ngannotate())
     .pipe(uglify())
     .pipe(concat(sourceMin))

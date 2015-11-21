@@ -33,13 +33,13 @@ function asyncUploadPreview() {
           'remove-callback="onUploadsRemove()" ' +
           'ng-model="ngModel">' +
         '</async-upload>' +
-        '<upload-progress ' +
+        '<progress ' +
           'ng-if="!multiple" ' +
           'type="{{progressType}}" ' +
           'hide-on-complete="true" ' +
           'hide-on-zero="true" ' +
           'progress-data="sMode.file.progressData">' +
-        '</upload-progress>' +
+        '</progress>' +
         '<doc-preview ' +
           'ng-if="!multiple" ' +
           'no-document-text="{{noDocumentText}}" ' +
@@ -62,10 +62,10 @@ function asyncUploadPreview() {
               'document-url="file.downloadUrl">' +
             '</doc-preview>' +
             '<div class="file-status">' +
-              '<upload-progress ' +
+              '<progress ' +
                 'type="indicator" ' +
                 'progress-data="file.progressData">' +
-              '</upload-progress>' +
+              '</progress>' +
             '</div>' +
           '</div>' +
         '</div>' +
