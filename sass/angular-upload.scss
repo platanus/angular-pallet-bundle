@@ -1,17 +1,9 @@
+@import "../bower_components/angular-async-upload/dist/angular-async-upload";
+@import "../bower_components/angular-doc-preview/dist/angular-doc-preview";
+@import "../bower_components/angular-progress/dist/angular-progress";
+
 $primary: #E9E9E9;
 $secondary: #FBF9F9;
-
-$initial: #0576A2;
-$progress: #FF9900;
-$success: #05A25D;
-$error: #DD4937;
-
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  -ms-border-radius: $radius;
-  border-radius: $radius;
-}
 
 @mixin inline-text() {
   vertical-align: middle;
@@ -22,7 +14,58 @@ $error: #DD4937;
   overflow: hidden;
 }
 
-@import "directives/async-upload";
-@import "directives/doc-preview";
-@import "directives/upload-progress";
-@import "directives/async-upload-preview";
+.files-table {
+  margin: 10px 0 10px 0;
+
+  .files-row {
+    width: 100%;
+    white-space: nowrap;
+    padding: 5px;
+
+    .doc-preview, .pre-preview, .file-status {
+      display: inline-block;
+      margin: 0;
+    }
+
+    .doc-preview, .pre-preview {
+      text-align: left;
+      width: 65%;
+    }
+
+    .pre-preview {
+      span {
+        @include inline-text();
+        &:before {
+          content: '\00a0\00a0\2022\00a0\00a0\00a0';
+        }
+      }
+    }
+
+    .doc-preview {
+      .doc-link {
+        @include inline-text();
+      }
+    }
+
+    .file-status {
+      text-align: right;
+      width: 35%;
+    }
+
+    &:nth-child(odd) {
+      background-color: $primary;
+    }
+
+    &:nth-child(even) {
+      background-color: $secondary;
+    }
+  }
+}
+
+// Overrides
+
+.doc-preview {
+  .image-preview {
+    border: solid 1px $primary;
+  }
+}

@@ -90,7 +90,7 @@ ngDescribe({
     });
 
     it('shows progress directive done', function() {
-      var element = deps.element[0].querySelector('.upload-progress');
+      var element = deps.element[0].querySelector('.progress');
       expect(element.textContent).toEqual('95%');
     });
 
@@ -174,7 +174,7 @@ ngDescribe({
     });
 
     it('shows progress error class', function() {
-      var element = deps.element[0].querySelector('.upload-progress');
+      var element = deps.element[0].querySelector('.progress');
       expect(element.classList).toMatch('error');
     });
 
@@ -251,7 +251,7 @@ ngDescribe({
         result['file' + i] = {
           prePreview: getRowElement(i, '.pre-preview'),
           docPreview: getRowElement(i, '.doc-preview'),
-          progressBar: getRowElement(i, '.upload-progress')
+          progressBar: getRowElement(i, '.progress')
         };
       }
     });

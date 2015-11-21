@@ -1,6 +1,6 @@
 (function(){
   'use strict';
 
-  angular.module('platanus.upload',['ngFileUpload']);
+  angular.module('platanus.upload',['ngFileUpload', 'platanus.asyncUpload', 'platanus.docPreview', 'platanus.progress']);
 
 })();
