@@ -1,4 +1,4 @@
-# Angular Upload
+# Angular Pallet Bundle
 
 This library is a directive that wraps the following:
 
