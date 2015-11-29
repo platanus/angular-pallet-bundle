@@ -15,7 +15,7 @@ var gulp = require('gulp'),
 var paths = {
   src: ['./src/index.js','./src/*.js'],
   dependenciesSrc: [
-    './bower_components/angular-async-upload/dist/angular-async-upload.js',
+    './bower_components/angular-pallet/dist/angular-pallet.js',
     './bower_components/angular-doc-preview/dist/angular-doc-preview.js',
     './bower_components/angular-progress/dist/angular-progress.js'
   ],

@@ -23,7 +23,7 @@ module.exports = function(config) {
       './bower_components/angular/angular.js',
       './bower_components/angular-mocks/angular-mocks.js',
       './bower_components/ng-file-upload/ng-file-upload.js',
-      './bower_components/angular-async-upload/dist/angular-async-upload.js',
+      './bower_components/angular-pallet/dist/angular-pallet.js',
       './bower_components/angular-progress/dist/angular-progress.js',
       './bower_components/angular-doc-preview/dist/angular-doc-preview.js',
       './src/index.js',

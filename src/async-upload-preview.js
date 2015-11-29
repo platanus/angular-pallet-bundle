@@ -21,7 +21,7 @@ function asyncUploadPreview() {
     },
     template:
       '<div>' +
-        '<async-upload ' +
+        '<pallet-file-selector ' +
           'upload-url="{{uploadUrl}}" ' +
           'multiple="{{multiple}}" ' +
           'init-callback="onInit()" ' +
@@ -32,7 +32,7 @@ function asyncUploadPreview() {
           'error-callback="onUploadError(errorData)" ' +
           'remove-callback="onUploadsRemove()" ' +
           'ng-model="ngModel">' +
-        '</async-upload>' +
+        '</pallet-file-selector>' +
         '<progress ' +
           'ng-if="!multiple" ' +
           'type="{{progressType}}" ' +

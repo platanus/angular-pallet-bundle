@@ -2,7 +2,7 @@
 
 This library is a directive that wraps the following:
 
-* [Angular-Async-Upload](https://github.com/platanus/angular-async-upload/blob/v1.1.0/README.md): it's an angular directive to perform asynchronous file uploads. It's built on top of [Ng-File-Upload](https://github.com/danialfarid/ng-file-upload) and it was created to play with [Paperclip Upload](https://github.com/platanus/paperclip_upload) gem.
+* [Angular-Pallet](https://github.com/platanus/angular-pallet/blob/v2.0.0/README.md): it's an angular directive to perform asynchronous file uploads. It's built on top of [Ng-File-Upload](https://github.com/danialfarid/ng-file-upload) and it was created to play with [Paperclip Upload](https://github.com/platanus/paperclip_upload) gem.
 
 * [Angular-Progress](https://github.com/platanus/angular-progress): directive that allows you to show progress status as a bar or percentage badge.
 
@@ -26,7 +26,7 @@ This directive is not intended to be a replacement for [Ng-File-Upload](https://
 
 <img src="./docs/images/multiple.png" height="170" />
 
-As "the icing on the cake", it handles the upload process asynchronously using the [Angular-Async-Upload](https://github.com/platanus/angular-async-upload/blob/v1.1.0/README.md) directive.
+As "the icing on the cake", it handles the upload process asynchronously using the [angular-pallet](https://github.com/platanus/angular-pallet/blob/v2.0.0/README.md) directive.
 
 ## Installation
 

@@ -7,12 +7,12 @@ ngDescribe({
       'upload-url="uploads"' +
       'progress-type="bar"' +
       'ng-model="user.uploadIdentifier">' +
-    '</async-upload>',
+    '</async-upload-preview>',
 
   tests: function(deps) {
     it('shows async upload directive', function() {
       var element = deps.element.find('div');
-      expect(element.attr('class')).toMatch('async-upload');
+      expect(element.attr('class')).toMatch('pallet-file-selector');
     });
 
     it('shows progress bar directive', function() {
@@ -55,7 +55,7 @@ ngDescribe({
         '<async-upload-preview ' +
           'upload-url="uploads"' +
           'ng-model="user.uploadIdentifier">' +
-        '</async-upload>');
+        '</async-upload-preview>');
 
       var callback = {
         success: function(callbackSuccess) {
@@ -139,7 +139,7 @@ ngDescribe({
           'upload-url="uploads"' +
           'render-image-as="thumb"' +
           'ng-model="user.uploadIdentifier">' +
-        '</async-upload>');
+        '</async-upload-preview>');
 
       // Setting uploadData on asyncUploadPreview directive scope
       // to simulate a previuos successful upload.
@@ -202,7 +202,7 @@ ngDescribe({
           'progress-type="bar"' +
           'render-image-as="thumb"' +
           'ng-model="user.uploadIdentifiers">' +
-        '</async-upload>');
+        '</async-upload-preview>');
 
       var uploadsCount = 0;
       var callback = {

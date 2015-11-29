@@ -26,7 +26,7 @@
     "ng-file-upload": "~5.0.9"
   },
   "dependencies": {
-    "angular-async-upload": "https://github.com/platanus/angular-async-upload.git#1.1.0",
+    "angular-pallet": "https://github.com/platanus/angular-pallet.git#2.0.0",
     "angular-progress": "https://github.com/platanus/angular-progress.git#1.1.0",
     "angular-doc-preview": "https://github.com/platanus/angular-doc-preview.git#1.1.0"
   }
