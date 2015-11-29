@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Unreleased
 
+##### Changed
+
+* Change module name from `platanus.upload` to `platanus.palletBundle`
 * Replace `angular-async-upload` lib with `angular-pallet`
 
 ### v1.0.0

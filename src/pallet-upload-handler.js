@@ -1,10 +1,10 @@
 (function(){
 
 angular
-  .module('platanus.upload')
-  .directive('asyncUploadPreview', asyncUploadPreview);
+  .module('platanus.palletBundle')
+  .directive('palletUploadHandler', palletUploadHandler);
 
-function asyncUploadPreview() {
+function palletUploadHandler() {
   var directive = {
     link: link,
     require: 'ngModel',

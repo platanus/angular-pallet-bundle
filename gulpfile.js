@@ -22,7 +22,7 @@ var paths = {
   dist: ['./dist/*.js']
 };
 
-var sourceMin = 'angular-upload.min.js';
+var sourceMin = 'angular-pallet-bundle.min.js';
 
 gulp.task('lint', function() {
   return gulp.src(paths.src)

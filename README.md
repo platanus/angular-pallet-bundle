@@ -32,16 +32,16 @@ As "the icing on the cake", it handles the upload process asynchronously using t
 
 ```bash
 bower install ng-file-upload --save
-bower install https://github.com/platanus/angular-upload --save
+bower install https://github.com/platanus/angular-pallet-bundle --save
 ```
 
 Include the JS files in your project and the library as an Angular Dependency
 
 ```javascript
-angular.module('yourapp', ['platanus.upload']);
+angular.module('yourapp', ['platanus.palletBundle']);
 ```
 
-> The library comes with a proposed stylesheet under `/dist/angular-upload.css`. You can use it or
+> The library comes with a proposed stylesheet under `/dist/angular-pallet-bundle.css`. You can use it or
 > create your own.
 
 ## Usage
@@ -56,18 +56,18 @@ Suppose you have a `User` model. This model has two attributes: `avatar` (user p
 ```html
 <form method="post" action="/users">
 
-  <async-upload-preview
+  <pallet-upload-handler
     render-image-as="thumb"
     no-document-text="No avatar..."
     upload-url="uploads"
     ng-model="user.avatarIdentifier">
-  </async-upload-preview>
+  </pallet-upload-handler>
 
-  <async-upload-preview
+  <pallet-upload-handler
     no-document-text="No file..."
     upload-url="uploads"
     ng-model="user.fileUrl">
-  </async-upload-preview>
+  </pallet-upload-handler>
 
   <input type="hidden" ng-value="user.avatarIdentifier" name="user[avatar_identifier]" />
   <input type="hidden" ng-value="user.fileIdentifier" name="user[file_identifier]" />
@@ -117,12 +117,12 @@ In order to make this directive work, the `POST /uploads` response must be a jso
 
 ## Credits
 
-Thank you [contributors](https://github.com/platanus/angular-upload/graphs/contributors)!
+Thank you [contributors](https://github.com/platanus/angular-pallet-bundle/graphs/contributors)!
 
 <img src="http://platan.us/gravatar_with_text.png" alt="Platanus" width="250"/>
 
-angular-upload is maintained by [platanus](http://platan.us).
+angular-pallet-bundle is maintained by [platanus](http://platan.us).
 
 ## License
 
-angular-upload is © 2015 platanus, spa. It is free software and may be redistributed under the terms specified in the LICENSE file.
+angular-pallet-bundle is © 2015 platanus, spa. It is free software and may be redistributed under the terms specified in the LICENSE file.

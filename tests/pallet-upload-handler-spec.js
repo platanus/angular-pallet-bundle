@@ -1,13 +1,13 @@
 ngDescribe({
   name: 'Async upload preview directive with initial state',
-  modules: 'platanus.upload',
+  modules: 'platanus.palletBundle',
   element:
-    '<async-upload-preview ' +
+    '<pallet-upload-handler ' +
       'no-document-text="no file present"' +
       'upload-url="uploads"' +
       'progress-type="bar"' +
       'ng-model="user.uploadIdentifier">' +
-    '</async-upload-preview>',
+    '</pallet-upload-handler>',
 
   tests: function(deps) {
     it('shows async upload directive', function() {
@@ -38,10 +38,10 @@ ngDescribe({
 
 ngDescribe({
   name: 'Async upload preview directive loading a file',
-  modules: 'platanus.upload',
+  modules: 'platanus.palletBundle',
   exposeApi: true,
   mock: {
-    'platanus.upload': {
+    'platanus.palletBundle': {
       'encodedIcons': {
         'xls': 'encoded_xls_file'
       }
@@ -52,10 +52,10 @@ ngDescribe({
   tests: function(deps, exposeApi) {
     beforeEach(function() {
       exposeApi.setupElement(
-        '<async-upload-preview ' +
+        '<pallet-upload-handler ' +
           'upload-url="uploads"' +
           'ng-model="user.uploadIdentifier">' +
-        '</async-upload-preview>');
+        '</pallet-upload-handler>');
 
       var callback = {
         success: function(callbackSuccess) {
@@ -123,7 +123,7 @@ ngDescribe({
 
 ngDescribe({
   name: 'Async upload preview directive failing upload',
-  modules: 'platanus.upload',
+  modules: 'platanus.palletBundle',
   exposeApi: true,
   parentScope: {
     user: {
@@ -135,13 +135,13 @@ ngDescribe({
   tests: function(deps, exposeApi) {
     beforeEach(function() {
       exposeApi.setupElement(
-        '<async-upload-preview ' +
+        '<pallet-upload-handler ' +
           'upload-url="uploads"' +
           'render-image-as="thumb"' +
           'ng-model="user.uploadIdentifier">' +
-        '</async-upload-preview>');
+        '</pallet-upload-handler>');
 
-      // Setting uploadData on asyncUploadPreview directive scope
+      // Setting uploadData on palletUploadHandler directive scope
       // to simulate a previuos successful upload.
       deps.element.isolateScope().uploadData = {
         identifier: 'OjynOLMx2h',
@@ -187,7 +187,7 @@ ngDescribe({
 
 ngDescribe({
   name: 'Async upload preview working with multiple files',
-  modules: 'platanus.upload',
+  modules: 'platanus.palletBundle',
   exposeApi: true,
   inject: ['Upload', 'encodedIcons'],
 
@@ -196,13 +196,13 @@ ngDescribe({
 
     beforeEach(function() {
       exposeApi.setupElement(
-        '<async-upload-preview ' +
+        '<pallet-upload-handler ' +
           'upload-url="uploads"' +
           'multiple="true"' +
           'progress-type="bar"' +
           'render-image-as="thumb"' +
           'ng-model="user.uploadIdentifiers">' +
-        '</async-upload-preview>');
+        '</pallet-upload-handler>');
 
       var uploadsCount = 0;
       var callback = {

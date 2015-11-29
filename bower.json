@@ -1,7 +1,7 @@
 {
-  "name": "angular-upload",
+  "name": "angular-pallet-bundle",
   "version": "1.0.0",
-  "homepage": "https://github.com/platanus/angular-upload",
+  "homepage": "https://github.com/platanus/angular-pallet-bundle",
   "description": "",
   "authors": [
     "Platanus",
@@ -9,9 +9,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/platanus/angular-upload.git"
+    "url": "https://github.com/platanus/angular-pallet-bundle.git"
   },
-  "main": "./dist/angular-upload.min.js",
+  "main": "./dist/angular-pallet-bundle.min.js",
   "license": "MIT",
   "ignore": [
     "**/.*",
