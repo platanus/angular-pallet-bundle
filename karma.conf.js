@@ -14,37 +14,21 @@ module.exports = function(config) {
 
 
     // list of files / patterns to load in the browser
-    files: [
-      './node_modules/es5-shim/es5-shim.js',
-      './node_modules/check-types/src/check-types.js',
-      './node_modules/check-more-types/check-more-types.js',
-      './node_modules/lazy-ass/index.js',
-      './node_modules/ng-describe/ng-describe.js',
-      './bower_components/angular/angular.js',
-      './bower_components/angular-mocks/angular-mocks.js',
-      './bower_components/ngCordova/dist/ng-cordova.js',
-      './bower_components/cordova-pallet/dist/cordova-pallet.js',
-      './bower_components/angular-progress/dist/angular-progress.js',
-      './bower_components/angular-doc-preview/dist/angular-doc-preview.js',
-      './src/cordova-pallet/index.js',
-      './src/*.js',
-      './tests/cordova-pallet/*',
-      './tests/*.js'
-    ],
+    // Defined for each adapter on gulpfile.js
+    files: [],
+
 
     proxies: {
       '/': '/base/'
     },
 
     // list of files to exclude
-    exclude: [
-    ],
+    exclude: [],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
+    preprocessors: {},
 
 
     // test results reporter to use

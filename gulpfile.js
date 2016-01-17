@@ -91,14 +91,46 @@ gulp.task('publish-npm', ['publish-git'], function(cb) {
   });
 });
 
+var sharedTestFiles = [
+  './node_modules/es5-shim/es5-shim.js',
+  './node_modules/check-types/src/check-types.js',
+  './node_modules/check-more-types/check-more-types.js',
+  './node_modules/lazy-ass/index.js',
+  './node_modules/ng-describe/ng-describe.js',
+  './bower_components/angular/angular.js',
+  './bower_components/angular-mocks/angular-mocks.js',
+  './bower_components/angular-progress/dist/angular-progress.js',
+  './bower_components/angular-doc-preview/dist/angular-doc-preview.js',
+];
+
+var angularPalletTestfiles = sharedTestFiles.concat([
+  './bower_components/ng-file-upload/ng-file-upload.js',
+  './bower_components/angular-pallet/dist/angular-pallet.js',
+  './src/angular-pallet/index.js',
+  './src/*.js',
+  './tests/*.js',
+  './tests/angular-pallet/*.js'
+]);
+
 gulp.task('test-angular-pallet', function (done) {
   new karmaServer({
-    configFile: __dirname + '/karma.angular-pallet-conf.js'
+    configFile: __dirname + '/karma.conf.js',
+    files: angularPalletTestfiles
   }, done).start();
 });
 
+var cordovaPalletTestfiles = sharedTestFiles.concat([
+  './bower_components/ngCordova/dist/ng-cordova.js',
+  './bower_components/cordova-pallet/dist/cordova-pallet.js',
+  './src/cordova-pallet/index.js',
+  './src/*.js',
+  './tests/*.js',
+  './tests/cordova-pallet/*.js'
+]);
+
 gulp.task('test-cordova-pallet', function (done) {
   new karmaServer({
-    configFile: __dirname + '/karma.cordova-pallet-conf.js'
+    configFile: __dirname + '/karma.conf.js',
+    files: cordovaPalletTestfiles
   }, done).start();
 });
