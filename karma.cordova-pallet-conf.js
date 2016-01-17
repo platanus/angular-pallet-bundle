@@ -22,12 +22,13 @@ module.exports = function(config) {
       './node_modules/ng-describe/ng-describe.js',
       './bower_components/angular/angular.js',
       './bower_components/angular-mocks/angular-mocks.js',
-      './bower_components/ng-file-upload/ng-file-upload.js',
-      './bower_components/angular-pallet/dist/angular-pallet.js',
+      './bower_components/ngCordova/dist/ng-cordova.js',
+      './bower_components/cordova-pallet/dist/cordova-pallet.js',
       './bower_components/angular-progress/dist/angular-progress.js',
       './bower_components/angular-doc-preview/dist/angular-doc-preview.js',
-      './src/index.js',
+      './src/cordova-pallet/index.js',
       './src/*.js',
+      './tests/cordova-pallet/*',
       './tests/*.js'
     ],
 

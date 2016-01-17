@@ -10,7 +10,8 @@ var gulp = require('gulp'),
     npm = require('npm'),
     prompt = require('gulp-prompt'),
     sourcemaps = require('gulp-sourcemaps'),
-    sass = require('gulp-sass');
+    sass = require('gulp-sass'),
+    karmaServer = require('karma').Server;
 
 var paths = {
   src: ['./src/index.js','./src/*.js'],
@@ -88,4 +89,16 @@ gulp.task('publish-npm', ['publish-git'], function(cb) {
       cb();
     });
   });
+});
+
+gulp.task('test-angular-pallet', function (done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.angular-pallet-conf.js'
+  }, done).start();
+});
+
+gulp.task('test-cordova-pallet', function (done) {
+  new karmaServer({
+    configFile: __dirname + '/karma.cordova-pallet-conf.js'
+  }, done).start();
 });
