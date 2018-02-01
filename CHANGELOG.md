@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### Unreleased
+
+##### Fixed
+
+* Add .scss ext to avoid ambiguity including style files
+
+##### Added
+
+* Add buttonLabel attribute to change button text
+
 ### v2.0.0
 
 ##### Changed

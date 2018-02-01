@@ -12,6 +12,7 @@ function palletUploadHandler() {
     scope: {
       ngModel: '=',
       documentName: '=',
+      buttonLabel: '@',
       uploadUrl: '@',
       multiple: '@',
       renderImageAs: '@',
@@ -22,6 +23,7 @@ function palletUploadHandler() {
     template:
       '<div>' +
         '<pallet-file-selector ' +
+          'button-label="{{buttonLabel}}" ' +
           'upload-url="{{uploadUrl}}" ' +
           'multiple="{{multiple}}" ' +
           'init-callback="onInit()" ' +
