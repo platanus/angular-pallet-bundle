@@ -1,7 +1,7 @@
 {
   "name": "angular-pallet-bundle",
   "description": "",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "devDependencies": {
     "check-more-types": "1.8.1",
     "check-types": "1.4.0",
