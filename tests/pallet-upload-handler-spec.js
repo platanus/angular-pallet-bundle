@@ -3,6 +3,7 @@ ngDescribe({
   modules: 'platanus.palletBundle',
   element:
     '<pallet-upload-handler ' +
+      'button-label="Seleccionar" ' +
       'no-document-text="no file present"' +
       'upload-url="uploads"' +
       'progress-type="bar"' +
@@ -10,6 +11,11 @@ ngDescribe({
     '</pallet-upload-handler>',
 
   tests: function(deps) {
+    it('shows custom button label', function() {
+      var element = deps.element.find('button');
+      expect(element.text()).toMatch('Seleccionar');
+    });
+
     it('shows async upload directive', function() {
       var element = deps.element.find('div');
       expect(element.attr('class')).toMatch('pallet-file-selector');
