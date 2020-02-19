@@ -28,6 +28,12 @@ This directive is not intended to be a replacement for [Ng-File-Upload](https://
 
 As "the icing on the cake", it handles the upload process asynchronously using the [angular-pallet](https://github.com/platanus/angular-pallet/blob/v2.0.0/README.md) directive.
 
+## Angular Pallet Bundle is no longer maintained.
+
+- We will leave the Issues open as a discussion forum only.
+- We do not guarantee a response from us in the Issues.
+- We are no longer accepting pull requests.
+
 ## Installation
 
 ```bash
